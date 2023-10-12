@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import CartPage from './pages/CartPage';
 import './App.css';
 import { createRoot } from 'react-dom/client';
 import {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <SignupPage></SignupPage>,
+  },
+  {
+    path: '/cart',
+    element: <CartPage></CartPage>,
   },
 ]);
 
