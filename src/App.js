@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import CartPage from './pages/CartPage';
+import Checkout from './pages/Checkout';
+import ProductDetailPage from './pages/ProductDetailPage';
 import './App.css';
 import { createRoot } from 'react-dom/client';
 import {
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
   {
     path: '/cart',
     element: <CartPage></CartPage>,
+  },
+  {
+    path: '/checkout',
+    element: <Checkout></Checkout>,
+  },
+  {
+    path: '/product-detail',
+    element: <ProductDetailPage></ProductDetailPage>,
   },
 ]);
 
