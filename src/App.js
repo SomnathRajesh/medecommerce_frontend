@@ -6,6 +6,7 @@ import SignupPage from './pages/SignupPage';
 import CartPage from './pages/CartPage';
 import Checkout from './pages/Checkout';
 import ProductDetailPage from './pages/ProductDetailPage';
+import Protected from './features/auth/components/Protected';
 import './App.css';
 import { createRoot } from 'react-dom/client';
 import {
@@ -30,11 +31,19 @@ const router = createBrowserRouter([
   },
   {
     path: '/cart',
-    element: <CartPage></CartPage>,
+    element: (
+      <Protected>
+        <CartPage></CartPage>
+      </Protected>
+    ),
   },
   {
     path: '/checkout',
-    element: <Checkout></Checkout>,
+    element: (
+      <Protected>
+        <Checkout></Checkout>
+      </Protected>
+    ),
   },
   {
     path: '/product-detail/:id',

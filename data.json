@@ -577,5 +577,23 @@
       "label": "Groceries",
       "checked": false
     }
-  ]
+  ],
+  "users": [
+    {
+      "email": "somnathpratik@gmail.com",
+      "password": "Testing@123",
+      "id": 1
+    },
+    {
+      "email": "somnathpratik@gmail.com",
+      "password": "Testing@123",
+      "id": 2
+    },
+    {
+      "email": "denissmith@gmail.com",
+      "password": "Denis@12",
+      "id": 3
+    }
+  ],
+  "cart": []
 }
