@@ -41,3 +41,12 @@ export function fetchProductsByFilters({ filter, sort, pagination }) {
     resolve({ data: { products: data, totalItems: +totalItems } });
   });
 }
+
+export function fetchAllCategories() {
+  //url wont be hardcoded
+  return new Promise(async (resolve) => {
+    const response = await fetch('http://localhost:8000/category');
+    const data = await response.json();
+    resolve({ data });
+  });
+}

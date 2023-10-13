@@ -550,5 +550,32 @@
         "https://i.dummyjson.com/data/products/30/thumbnail.jpg"
       ]
     }
+  ],
+  "category": [
+    {
+      "value": "smartphones",
+      "label": "Smartphones",
+      "checked": false
+    },
+    {
+      "value": "laptops",
+      "label": "Laptops",
+      "checked": false
+    },
+    {
+      "value": "fragrances",
+      "label": "Fragrances",
+      "checked": false
+    },
+    {
+      "value": "skincare",
+      "label": "Skincare",
+      "checked": false
+    },
+    {
+      "value": "groceries",
+      "label": "Groceries",
+      "checked": false
+    }
   ]
 }
