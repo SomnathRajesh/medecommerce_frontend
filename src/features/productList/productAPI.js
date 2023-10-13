@@ -8,6 +8,15 @@ export function fetchAllProducts() {
   });
 }
 
+export function fetchProductById(id) {
+  //url wont be hardcoded
+  return new Promise(async (resolve) => {
+    const response = await fetch('http://localhost:8000/products/' + id);
+    const data = await response.json();
+    resolve({ data });
+  });
+}
+
 export function fetchProductsByFilters({ filter, sort, pagination }) {
   //filter = {"category":["homeopathy","allopathy"]}
   //sort = {_sort:"price",_order="desc"}
