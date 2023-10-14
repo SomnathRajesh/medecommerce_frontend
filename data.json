@@ -587,13 +587,33 @@
       "addresses": [
         {
           "firstName": "Somnath",
-          "lastName": "Rajesh",
+          "lastName": "Pratik",
           "email": "somnathpratik@gmail.com",
           "phone": "7654321098",
           "street": "Evershine Road",
           "city": "Mumbai",
           "state": "Maharashtra",
           "pinCode": "400123"
+        },
+        {
+          "firstName": "Somnath",
+          "lastName": "Rajesh",
+          "email": "somnathpratik@gmail.com",
+          "phone": "7654321098",
+          "street": "Bhayander",
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "pinCode": "411209"
+        },
+        {
+          "firstName": "Rajesh ",
+          "lastName": "Singh",
+          "email": "rajeshsingh@gmail.com",
+          "phone": "902319467",
+          "street": "Fort Road",
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "pinCode": "400129"
         }
       ],
       "id": 1
@@ -616,7 +636,25 @@
       "id": 3
     }
   ],
-  "cart": [],
+  "cart": [
+    {
+      "title": "Samsung Universe 9",
+      "description": "Samsung's new variant which goes beyond Galaxy to the Universe",
+      "price": 1249,
+      "discountPercentage": 15.46,
+      "rating": 4.09,
+      "stock": 36,
+      "brand": "Samsung",
+      "category": "smartphones",
+      "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/3/1.jpg"
+      ],
+      "quantity": 1,
+      "user": 1,
+      "id": 1
+    }
+  ],
   "orders": [
     {
       "items": [
@@ -803,6 +841,130 @@
       },
       "status": "pending",
       "id": 3
+    },
+    {
+      "items": [
+        {
+          "title": "Microsoft Surface Laptop 4",
+          "description": "Style and speed. Stand out on HD video calls backed by Studio Mics. Capture ideas on the vibrant touchscreen.",
+          "price": 1499,
+          "discountPercentage": 10.23,
+          "rating": 4.43,
+          "stock": 68,
+          "brand": "Microsoft Surface",
+          "category": "laptops",
+          "thumbnail": "https://i.dummyjson.com/data/products/8/thumbnail.jpg",
+          "images": [
+            "https://i.dummyjson.com/data/products/8/1.jpg",
+            "https://i.dummyjson.com/data/products/8/2.jpg",
+            "https://i.dummyjson.com/data/products/8/3.jpg",
+            "https://i.dummyjson.com/data/products/8/4.jpg",
+            "https://i.dummyjson.com/data/products/8/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": 3,
+          "id": 1
+        }
+      ],
+      "totalAmount": 1499,
+      "totalItems": 1,
+      "user": {
+        "email": "denissmith@gmail.com",
+        "password": "Denis@12",
+        "addresses": [
+          {
+            "firstName": "Denis",
+            "lastName": "Smith",
+            "email": "denissmith@gmail.com",
+            "phone": "7644321097",
+            "street": "Barter Road",
+            "city": "Jaipur",
+            "state": "Rajasthan",
+            "pinCode": "123456"
+          }
+        ],
+        "id": 3
+      },
+      "paymentmethod": "cash",
+      "selectedAddress": {
+        "firstName": "Denis",
+        "lastName": "Smith",
+        "email": "denissmith@gmail.com",
+        "phone": "7644321097",
+        "street": "Barter Road",
+        "city": "Jaipur",
+        "state": "Rajasthan",
+        "pinCode": "123456"
+      },
+      "status": "pending",
+      "id": 4
+    },
+    {
+      "items": [
+        {
+          "title": "Oil Free Moisturizer 100ml",
+          "description": "Dermive Oil Free Moisturizer with SPF 20 is specifically formulated with ceramides, hyaluronic acid & sunscreen.",
+          "price": 40,
+          "discountPercentage": 13.1,
+          "rating": 4.56,
+          "stock": 88,
+          "brand": "Dermive",
+          "category": "skincare",
+          "thumbnail": "https://i.dummyjson.com/data/products/18/thumbnail.jpg",
+          "images": [
+            "https://i.dummyjson.com/data/products/18/1.jpg",
+            "https://i.dummyjson.com/data/products/18/2.jpg",
+            "https://i.dummyjson.com/data/products/18/3.jpg",
+            "https://i.dummyjson.com/data/products/18/4.jpg",
+            "https://i.dummyjson.com/data/products/18/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": 1,
+          "id": 1
+        }
+      ],
+      "totalAmount": 40,
+      "totalItems": 1,
+      "user": {
+        "email": "somnathpratik@gmail.com",
+        "password": "Testing@123",
+        "addresses": [
+          {
+            "firstName": "Somnath",
+            "lastName": "Rajesh",
+            "email": "somnathpratik@gmail.com",
+            "phone": "7654321098",
+            "street": "Evershine Road",
+            "city": "Mumbai",
+            "state": "Maharashtra",
+            "pinCode": "400123"
+          },
+          {
+            "firstName": "Somnath",
+            "lastName": "Rajesh",
+            "email": "somnathpratik@gmail.com",
+            "phone": "7654321098",
+            "street": "Bhayander",
+            "city": "Mumbai",
+            "state": "Maharashtra",
+            "pinCode": "411209"
+          }
+        ],
+        "id": 1
+      },
+      "paymentmethod": "cash",
+      "selectedAddress": {
+        "firstName": "Somnath",
+        "lastName": "Rajesh",
+        "email": "somnathpratik@gmail.com",
+        "phone": "7654321098",
+        "street": "Bhayander",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pinCode": "411209"
+      },
+      "status": "pending",
+      "id": 5
     }
   ]
 }

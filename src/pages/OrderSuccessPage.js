@@ -4,9 +4,10 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { selectLoggedInUser } from '../features/auth/authSlice';
 import { resetCartAsync } from '../features/cart/cartSlice';
 import { resetOrder } from '../features/order/orderSlice';
+import { selectUserInfo } from '../features/user/userSlice';
 function OrderSuccessPage() {
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectUserInfo);
   const params = useParams();
   useEffect(() => {
     //reset cart

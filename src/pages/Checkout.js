@@ -11,13 +11,10 @@ import {
 } from '../features/cart/cartSlice';
 import { useForm } from 'react-hook-form';
 import {
-  selectLoggedInUser,
-  updateUserAsync,
-} from '../features/auth/authSlice';
-import {
   createOrderAsync,
   selectCurrentOrder,
 } from '../features/order/orderSlice';
+import { selectUserInfo, updateUserAsync } from '../features/user/userSlice';
 
 function Checkout() {
   const items = useSelector(selectItems);
@@ -30,7 +27,7 @@ function Checkout() {
     reset,
     formState: { errors },
   } = useForm();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectUserInfo);
   const currentOrder = useSelector(selectCurrentOrder);
   const totalAmount = items.reduce(
     (amount, item) => item.price * item.quantity + amount,

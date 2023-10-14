@@ -9,6 +9,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import Protected from './features/auth/components/Protected';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import UserOrdersPage from './pages/UserOrdersPage';
+import UserProfilePage from './pages/UserProfilePage';
 import { selectLoggedInUser } from './features/auth/authSlice';
 import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
 import './App.css';
@@ -22,6 +23,7 @@ import {
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import PageNoTFound from './pages/404';
+import { fetchLoggedInUserAsync } from './features/user/userSlice';
 
 const router = createBrowserRouter([
   {
@@ -65,6 +67,10 @@ const router = createBrowserRouter([
     element: <UserOrdersPage></UserOrdersPage>,
   },
   {
+    path: '/profile',
+    element: <UserProfilePage></UserProfilePage>,
+  },
+  {
     path: '*',
     element: <PageNoTFound></PageNoTFound>,
   },
@@ -76,6 +82,7 @@ function App() {
   useEffect(() => {
     if (user && user.id) {
       dispatch(fetchItemsByUserIdAsync(user));
+      dispatch(fetchLoggedInUserAsync(user));
     }
   }, [dispatch, user]);
   return (
