@@ -14,7 +14,10 @@ import {
   selectLoggedInUser,
   updateUserAsync,
 } from '../features/auth/authSlice';
-import { createOrderAsync } from '../features/order/orderSlice';
+import {
+  createOrderAsync,
+  selectCurrentOrder,
+} from '../features/order/orderSlice';
 
 function Checkout() {
   const items = useSelector(selectItems);
@@ -28,6 +31,7 @@ function Checkout() {
     formState: { errors },
   } = useForm();
   const user = useSelector(selectLoggedInUser);
+  const currentOrder = useSelector(selectCurrentOrder);
   const totalAmount = items.reduce(
     (amount, item) => item.price * item.quantity + amount,
     0
@@ -50,22 +54,34 @@ function Checkout() {
   };
 
   const handleOrder = (e) => {
-    const order = {
-      items,
-      totalAmount,
-      totalItems,
-      user,
-      paymentmethod,
-      selectedAddress,
-    };
-    dispatch(createOrderAsync(order));
-    //Redirect to order-success page
+    if (selectedAddress && paymentmethod) {
+      const order = {
+        items,
+        totalAmount,
+        totalItems,
+        user,
+        paymentmethod,
+        selectedAddress,
+        status: 'pending',
+      };
+      dispatch(createOrderAsync(order));
+      //Redirect to order-success page
+    } else {
+      alert('Enter address and payment method');
+    }
+
     //clear cart
     //change the stock on server
   };
   return (
     <Fragment>
       {!items.length && <Navigate to='/' replace={true}></Navigate>}
+      {currentOrder && (
+        <Navigate
+          to={`/order-success/${currentOrder.id}`}
+          replace={true}
+        ></Navigate>
+      )}
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5'>
           <div className='lg:col-span-3'>
