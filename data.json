@@ -48,7 +48,9 @@
       "brand": "Samsung",
       "category": "smartphones",
       "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
-      "images": ["https://i.dummyjson.com/data/products/3/1.jpg"]
+      "images": [
+        "https://i.dummyjson.com/data/products/3/1.jpg"
+      ]
     },
     {
       "id": 4,
@@ -595,5 +597,108 @@
       "id": 3
     }
   ],
-  "cart": []
+  "cart": [
+    {
+      "id": 2,
+      "title": "iPhone X",
+      "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+      "price": 899,
+      "discountPercentage": 17.94,
+      "rating": 4.44,
+      "stock": 34,
+      "brand": "Apple",
+      "category": "smartphones",
+      "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/2/1.jpg",
+        "https://i.dummyjson.com/data/products/2/2.jpg",
+        "https://i.dummyjson.com/data/products/2/3.jpg",
+        "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+      ],
+      "quantity": 2,
+      "user": 1
+    },
+    {
+      "id": 14,
+      "title": "Non-Alcoholic Concentrated Perfume Oil",
+      "description": "Original Al Munakh® by Mahal Al Musk | Our Impression of Climate | 6ml Non-Alcoholic Concentrated Perfume Oil",
+      "price": 120,
+      "discountPercentage": 15.6,
+      "rating": 4.21,
+      "stock": 114,
+      "brand": "Al Munakh",
+      "category": "fragrances",
+      "thumbnail": "https://i.dummyjson.com/data/products/14/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/14/1.jpg",
+        "https://i.dummyjson.com/data/products/14/2.jpg",
+        "https://i.dummyjson.com/data/products/14/3.jpg",
+        "https://i.dummyjson.com/data/products/14/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "user": 1
+    },
+    {
+      "id": 6,
+      "title": "MacBook Pro",
+      "description": "MacBook Pro 2021 with mini-LED display may launch between September, November",
+      "price": 1749,
+      "discountPercentage": 11.02,
+      "rating": 4.57,
+      "stock": 83,
+      "brand": "Apple",
+      "category": "laptops",
+      "thumbnail": "https://i.dummyjson.com/data/products/6/thumbnail.png",
+      "images": [
+        "https://i.dummyjson.com/data/products/6/1.png",
+        "https://i.dummyjson.com/data/products/6/2.jpg",
+        "https://i.dummyjson.com/data/products/6/3.png",
+        "https://i.dummyjson.com/data/products/6/4.jpg"
+      ],
+      "quantity": 1,
+      "user": 3
+    },
+    {
+      "id": 18,
+      "title": "Oil Free Moisturizer 100ml",
+      "description": "Dermive Oil Free Moisturizer with SPF 20 is specifically formulated with ceramides, hyaluronic acid & sunscreen.",
+      "price": 40,
+      "discountPercentage": 13.1,
+      "rating": 4.56,
+      "stock": 88,
+      "brand": "Dermive",
+      "category": "skincare",
+      "thumbnail": "https://i.dummyjson.com/data/products/18/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/18/1.jpg",
+        "https://i.dummyjson.com/data/products/18/2.jpg",
+        "https://i.dummyjson.com/data/products/18/3.jpg",
+        "https://i.dummyjson.com/data/products/18/4.jpg",
+        "https://i.dummyjson.com/data/products/18/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "user": 3
+    },
+    {
+      "id": 23,
+      "title": "Orange Essence Food Flavou",
+      "description": "Specifications of Orange Essence Food Flavour For Cakes and Baking Food Item",
+      "price": 14,
+      "discountPercentage": 8.04,
+      "rating": 4.85,
+      "stock": 26,
+      "brand": "Baking Food Items",
+      "category": "groceries",
+      "thumbnail": "https://i.dummyjson.com/data/products/23/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/23/1.jpg",
+        "https://i.dummyjson.com/data/products/23/2.jpg",
+        "https://i.dummyjson.com/data/products/23/3.jpg",
+        "https://i.dummyjson.com/data/products/23/4.jpg",
+        "https://i.dummyjson.com/data/products/23/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "user": 3
+    }
+  ]
 }
