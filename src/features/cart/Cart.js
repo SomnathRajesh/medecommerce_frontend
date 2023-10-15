@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteItemFromCartAsync,
+  selectCartStatus,
   selectItems,
   updateCartAsync,
 } from './cartSlice';
@@ -9,12 +10,16 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, Navigate } from 'react-router-dom';
+import { Blocks } from 'react-loader-spinner';
+import Modal from '../common/Modal';
 
 export default function Cart() {
   /* eslint-disable */
   const items = useSelector(selectItems);
+  const status = useSelector(selectCartStatus);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
+  const [openModal, setOpenModal] = useState(null);
   const totalAmount = items.reduce(
     (amount, item) => item.price * item.quantity + amount,
     0
@@ -26,6 +31,7 @@ export default function Cart() {
   const handleRemove = (e, id) => {
     dispatch(deleteItemFromCartAsync(id));
   };
+
   return (
     <Fragment>
       {!items.length && <Navigate to='/' replace={true}></Navigate>}
@@ -35,6 +41,16 @@ export default function Cart() {
             Cart
           </h1>
           <div className='flow-root'>
+            {status === 'loading' ? (
+              <Blocks
+                visible={true}
+                height='80'
+                width='80'
+                ariaLabel='blocks-loading'
+                wrapperStyle={{}}
+                wrapperClass='blocks-wrapper'
+              />
+            ) : null}
             <ul role='list' className='-my-6 divide-y divide-gray-200'>
               {items.map((item) => (
                 <li key={item.id} className='flex py-6'>
@@ -76,9 +92,20 @@ export default function Cart() {
                       </div>
 
                       <div className='flex'>
+                        <Modal
+                          title={`Delete ${item.title}`}
+                          message='Are you sure you want to remove this item from the Cart'
+                          modOption='Delete'
+                          cancelOption='Cancel'
+                          modAction={(e) => handleRemove(e, item.id)}
+                          cancelAction={() => setOpenModal(null)}
+                          showModal={openModal === item.id}
+                        ></Modal>
                         <button
                           type='button'
-                          onClick={(e) => handleRemove(e, item.id)}
+                          onClick={(e) => {
+                            setOpenModal(item.id);
+                          }}
                           className='font-medium text-indigo-600 hover:text-indigo-500'
                         >
                           Remove

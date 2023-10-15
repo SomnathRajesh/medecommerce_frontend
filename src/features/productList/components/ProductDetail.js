@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
 import { StarIcon } from '@heroicons/react/20/solid';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProductByIdAsync, selectProductById } from '../productSlice';
+import {
+  fetchProductByIdAsync,
+  selectProductById,
+  selectProductListStatus,
+} from '../productSlice';
 import { useParams } from 'react-router-dom';
 import { addToCartAsync, selectItems } from '../../cart/cartSlice';
 import { selectLoggedInUser } from '../../auth/authSlice';
 import { Link } from 'react-router-dom';
+import { useAlert } from 'react-alert';
+import { Blocks } from 'react-loader-spinner';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
@@ -18,10 +24,12 @@ export default function ProductDetail() {
   const items = useSelector(selectItems);
   const dispatch = useDispatch();
   const params = useParams();
+  const alert = useAlert();
+  const status = useSelector(selectProductListStatus);
 
   const handleCart = (e) => {
     e.preventDefault();
-    if (items.findIndex((item) => item.protectId === product.id) < 0) {
+    if (items.findIndex((item) => item.productId === product.id) < 0) {
       const newItem = {
         ...product,
         productId: product.id,
@@ -30,7 +38,9 @@ export default function ProductDetail() {
       };
       delete newItem['id'];
       dispatch(addToCartAsync(newItem));
+      alert.success('Item added to cart');
     } else {
+      alert.error('Already added to cart!');
     }
   };
 
@@ -40,6 +50,16 @@ export default function ProductDetail() {
 
   return (
     <div className='bg-white'>
+      {status === 'loading' ? (
+        <Blocks
+          visible={true}
+          height='80'
+          width='80'
+          ariaLabel='blocks-loading'
+          wrapperStyle={{}}
+          wrapperClass='blocks-wrapper'
+        />
+      ) : null}
       {product && (
         <div className='pt-6'>
           <nav aria-label='Breadcrumb'>

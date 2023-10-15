@@ -6,6 +6,7 @@ import {
   fetchProductsByFiltersAsync,
   selectAllCategories,
   selectAllProducts,
+  selectProductListStatus,
   selectTotalItems,
 } from '../productSlice';
 import { Fragment } from 'react';
@@ -26,6 +27,7 @@ import {
 import { Link } from 'react-router-dom';
 import { ITEMS_PER_PAGE } from '../../../app/constant';
 import Pagination from '../../common/Pagination';
+import { Blocks } from 'react-loader-spinner';
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
   { name: 'Price: Low to High', sort: 'price', order: 'asc', current: false },
@@ -45,6 +47,7 @@ export default function ProductList() {
   const [page, setPage] = useState(1);
   const totalItems = useSelector(selectTotalItems);
   const categories = useSelector(selectAllCategories);
+  const status = useSelector(selectProductListStatus);
 
   const filters = [
     {
@@ -356,6 +359,16 @@ export default function ProductList() {
 
                   {/* Product grid */}
                   <div className='lg:col-span-3'>
+                    {status === 'loading' ? (
+                      <Blocks
+                        visible={true}
+                        height='80'
+                        width='80'
+                        ariaLabel='blocks-loading'
+                        wrapperStyle={{}}
+                        wrapperClass='blocks-wrapper'
+                      />
+                    ) : null}
                     {
                       <div className='bg-white'>
                         <div className='mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8'>
