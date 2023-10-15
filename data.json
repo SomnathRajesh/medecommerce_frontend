@@ -710,7 +710,7 @@
         "state": "Rajasthan",
         "pinCode": "123456"
       },
-      "status": "pending",
+      "status": "dispatched",
       "id": 1
     },
     {
@@ -765,7 +765,7 @@
         "state": "Rajasthan",
         "pinCode": "123456"
       },
-      "status": "pending",
+      "status": "delivered",
       "id": 2
     },
     {
@@ -965,7 +965,7 @@
         "state": "Maharashtra",
         "pinCode": "411209"
       },
-      "status": "pending",
+      "status": "dispatched",
       "id": 5
     }
   ]

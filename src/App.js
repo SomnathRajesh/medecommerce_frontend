@@ -8,6 +8,7 @@ import Checkout from './pages/Checkout';
 import ProductDetailPage from './pages/ProductDetailPage';
 import AdminProductDetailPage from './pages/AdminProductDetailPage';
 import Protected from './features/auth/components/Protected';
+import AdminOrdersPage from './pages/AdminOrdersPage';
 import ProtectedAdmin from './features/auth/components/ProtectedAdmin';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import UserOrdersPage from './pages/UserOrdersPage';
@@ -85,6 +86,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedAdmin>
         <AdminProductFormPage></AdminProductFormPage>
+      </ProtectedAdmin>
+    ),
+  },
+  {
+    path: '/admin/orders',
+    element: (
+      <ProtectedAdmin>
+        <AdminOrdersPage></AdminOrdersPage>
       </ProtectedAdmin>
     ),
   },

@@ -3,7 +3,7 @@ import { StarIcon } from '@heroicons/react/20/solid';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductByIdAsync, selectProductById } from '../productSlice';
 import { useParams } from 'react-router-dom';
-import { addToCartAsync } from '../../cart/cartSlice';
+import { addToCartAsync, selectItems } from '../../cart/cartSlice';
 import { selectLoggedInUser } from '../../auth/authSlice';
 import { Link } from 'react-router-dom';
 function classNames(...classes) {
@@ -15,13 +15,23 @@ export default function ProductDetail() {
   // const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
   const product = useSelector(selectProductById);
   const user = useSelector(selectLoggedInUser);
+  const items = useSelector(selectItems);
   const dispatch = useDispatch();
   const params = useParams();
 
   const handleCart = (e) => {
-    const newItem = { ...product, quantity: 1, user: user.id };
-    delete newItem['id'];
-    dispatch(addToCartAsync(newItem));
+    e.preventDefault();
+    if (items.findIndex((item) => item.protectId === product.id) < 0) {
+      const newItem = {
+        ...product,
+        productId: product.id,
+        quantity: 1,
+        user: user.id,
+      };
+      delete newItem['id'];
+      dispatch(addToCartAsync(newItem));
+    } else {
+    }
   };
 
   useEffect(() => {
