@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
+  fetchAllUsers,
   fetchCount,
   fetchLoggedInUser,
   fetchLoggedInUserOrders,
@@ -7,6 +8,7 @@ import {
 } from './userAPI';
 
 const initialState = {
+  users: [],
   userInfo: null,
   userOrders: [],
   status: 'idle',
@@ -21,6 +23,15 @@ export const fetchLoggedInUserAsync = createAsyncThunk(
   'user/fetchLoggedInUser',
   async (user) => {
     const response = await fetchLoggedInUser(user);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+
+export const fetchAllUsersAsync = createAsyncThunk(
+  'user/fetchAllUsers',
+  async () => {
+    const response = await fetchAllUsers();
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -81,6 +92,13 @@ export const userSlice = createSlice({
       .addCase(updateUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.userInfo = action.payload;
+      })
+      .addCase(fetchAllUsersAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchAllUsersAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.users = action.payload;
       });
   },
 });
@@ -95,4 +113,5 @@ export const { increment } = userSlice.actions;
 // Here's an example of conditionally dispatching actions based on current state.
 export const selectUserOrders = (state) => state.user.userOrders;
 export const selectUserInfo = (state) => state.user.userInfo;
+export const selectAllUsers = (state) => state.user.users;
 export default userSlice.reducer;

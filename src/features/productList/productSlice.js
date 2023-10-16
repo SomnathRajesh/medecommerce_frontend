@@ -6,6 +6,8 @@ import {
   fetchProductById,
   createProduct,
   updateProduct,
+  createCategory,
+  updateCategory,
 } from './productAPI';
 
 const initialState = {
@@ -74,6 +76,24 @@ export const fetchAllCategoriesAsync = createAsyncThunk(
   }
 );
 
+export const createCategoryAsync = createAsyncThunk(
+  'categories/createCategory',
+  async (category) => {
+    const response = await createCategory(category);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+
+export const updateCategoryAsync = createAsyncThunk(
+  'categories/updateCategory',
+  async (update) => {
+    const response = await updateCategory(update);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+
 export const productSlice = createSlice({
   name: 'product',
   initialState,
@@ -133,6 +153,23 @@ export const productSlice = createSlice({
         );
         state.products[index] = action.payload;
         state.selectedProduct = action.payload;
+      })
+      .addCase(createCategoryAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(createCategoryAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.categories.push(action.payload);
+      })
+      .addCase(updateCategoryAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateCategoryAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        const index = state.categories.findIndex(
+          (item) => item.id === action.payload.id
+        );
+        state.categories[index] = action.payload;
       });
   },
 });

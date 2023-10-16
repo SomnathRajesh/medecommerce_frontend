@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import {
   Bars3Icon,
@@ -13,13 +13,15 @@ import { selectLoggedInUser } from '../auth/authSlice';
 const user = {
   name: 'Tom Cook',
   email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  admin: '',
 };
 const navigation = [
   { name: 'Products', link: '/', user: true },
+  { name: 'Products', link: '/', guest: true },
   { name: 'Products', link: '/admin', admin: true },
   { name: 'Orders', link: '/admin/orders', admin: true },
+  { name: 'Users', link: '/admin/users', admin: true },
+  { name: 'Categories', link: '/admin/categories', admin: true },
 ];
 const userNavigation = [
   { name: 'My Profile', link: '/profile' },
@@ -33,7 +35,10 @@ function classNames(...classes) {
 
 function Navbar({ children }) {
   const items = useSelector(selectItems);
-  const user = useSelector(selectLoggedInUser);
+  const loggedInUser = useSelector(selectLoggedInUser);
+  const isLoggedIn = loggedInUser !== null;
+
+  const userRole = isLoggedIn ? loggedInUser.role : 'guest';
   return (
     <div className='min-h-full'>
       <Disclosure as='nav' className='bg-gray-800'>
@@ -54,7 +59,7 @@ function Navbar({ children }) {
                   <div className='hidden md:block'>
                     <div className='ml-10 flex items-baseline space-x-4'>
                       {navigation.map((item) =>
-                        item[user.role] ? (
+                        item[userRole] ? (
                           <Link
                             key={item.name}
                             to={item.link}
@@ -100,11 +105,21 @@ function Navbar({ children }) {
                         <Menu.Button className='relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>
                           <span className='absolute -inset-1.5' />
                           <span className='sr-only'>Open user menu</span>
-                          <img
-                            className='h-8 w-8 rounded-full'
-                            src={user.imageUrl}
-                            alt=''
-                          />
+                          {userRole === 'admin' ? (
+                            <img
+                              width='48'
+                              height='48'
+                              src='https://img.icons8.com/fluency/48/administrator-male.png'
+                              alt='administrator-male'
+                            />
+                          ) : (
+                            <img
+                              width='48'
+                              height='48'
+                              src='https://img.icons8.com/fluency/48/test-account.png'
+                              alt='test-account'
+                            />
+                          )}
                         </Menu.Button>
                       </div>
                       <Transition

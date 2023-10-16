@@ -16,6 +16,9 @@ import UserProfilePage from './pages/UserProfilePage';
 import Logout from './features/auth/components/Logout';
 import ForgotPasswordPage from './pages/ForgotPassowrdPage';
 import AdminProductFormPage from './pages/AdminProductForm';
+import AdminUsersPage from './pages/AdminUsersPage';
+import AdminCategoriesPage from './pages/AdminCategoriesPage';
+import AdminCategoryFormPage from './pages/AdminCategoryForm';
 import { selectLoggedInUser } from './features/auth/authSlice';
 import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
 import './App.css';
@@ -95,6 +98,14 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/admin/category-form',
+    element: (
+      <ProtectedAdmin>
+        <AdminCategoryFormPage></AdminCategoryFormPage>
+      </ProtectedAdmin>
+    ),
+  },
+  {
     path: '/admin/orders',
     element: (
       <ProtectedAdmin>
@@ -107,6 +118,22 @@ const router = createBrowserRouter([
     element: (
       <ProtectedAdmin>
         <AdminProductFormPage></AdminProductFormPage>
+      </ProtectedAdmin>
+    ),
+  },
+  {
+    path: '/admin/users',
+    element: (
+      <ProtectedAdmin>
+        <AdminUsersPage></AdminUsersPage>
+      </ProtectedAdmin>
+    ),
+  },
+  {
+    path: '/admin/categories',
+    element: (
+      <ProtectedAdmin>
+        <AdminCategoriesPage></AdminCategoriesPage>
       </ProtectedAdmin>
     ),
   },

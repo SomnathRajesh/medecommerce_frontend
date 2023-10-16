@@ -87,3 +87,31 @@ export function fetchAllCategories() {
     resolve({ data });
   });
 }
+
+export function createCategory(category) {
+  //url wont be hardcoded
+  return new Promise(async (resolve) => {
+    const response = await fetch('http://localhost:8000/category/', {
+      method: 'POST',
+      body: JSON.stringify(category),
+      headers: { 'content-type': 'application/json' },
+    });
+    const data = await response.json();
+    resolve({ data });
+  });
+}
+
+export function updateCategory(update) {
+  return new Promise(async (resolve) => {
+    const response = await fetch(
+      'http://localhost:8000/category/' + update.id,
+      {
+        method: 'PATCH',
+        body: JSON.stringify(update),
+        headers: { 'content-type': 'application/json' },
+      }
+    );
+    const data = await response.json();
+    resolve({ data });
+  });
+}

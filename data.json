@@ -568,29 +568,38 @@
   ],
   "category": [
     {
+      "id": 1,
       "value": "smartphones",
       "label": "Smartphones",
       "checked": false
     },
     {
+      "id": 2,
       "value": "laptops",
       "label": "Laptops",
       "checked": false
     },
     {
+      "id": 3,
       "value": "fragrances",
       "label": "Fragrances",
       "checked": false
     },
     {
+      "id": 4,
       "value": "skincare",
       "label": "Skincare",
       "checked": false
     },
     {
+      "id": 5,
       "value": "groceries",
       "label": "Groceries",
       "checked": false
+    },
+    {
+      "label": "Homeopathy",
+      "id": 6
     }
   ],
   "users": [
