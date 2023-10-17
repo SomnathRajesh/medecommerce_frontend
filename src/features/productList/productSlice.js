@@ -8,6 +8,7 @@ import {
   updateProduct,
   createCategory,
   updateCategory,
+  fetchCategoryById,
 } from './productAPI';
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
   status: 'idle',
   totalItems: 0,
   selectedProduct: null,
+  selectedCategory: null,
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -94,6 +96,15 @@ export const updateCategoryAsync = createAsyncThunk(
   }
 );
 
+export const fetchCategoryByIdAsync = createAsyncThunk(
+  'categories/fetchCategoryById',
+  async (id) => {
+    const response = await fetchCategoryById(id);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+
 export const productSlice = createSlice({
   name: 'product',
   initialState,
@@ -101,6 +112,9 @@ export const productSlice = createSlice({
   reducers: {
     clearSelectedProduct: (state) => {
       state.selectedProduct = null;
+    },
+    clearSelectedCategory: (state) => {
+      state.selectedCategory = null;
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -170,11 +184,19 @@ export const productSlice = createSlice({
           (item) => item.id === action.payload.id
         );
         state.categories[index] = action.payload;
+      })
+      .addCase(fetchCategoryByIdAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchCategoryByIdAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.selectedCategory = action.payload;
       });
   },
 });
 
 export const { clearSelectedProduct } = productSlice.actions;
+export const { clearSelectedCategory } = productSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -184,6 +206,7 @@ export const selectAllCategories = (state) => state.product.categories;
 export const selectTotalItems = (state) => state.product.totalItems;
 export const selectProductById = (state) => state.product.selectedProduct;
 export const selectProductListStatus = (state) => state.product.status;
+export const selectCategoryById = (state) => state.product.selectedCategory;
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

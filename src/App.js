@@ -122,6 +122,14 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/admin/category-form/edit/:id',
+    element: (
+      <ProtectedAdmin>
+        <AdminCategoryFormPage></AdminCategoryFormPage>
+      </ProtectedAdmin>
+    ),
+  },
+  {
     path: '/admin/users',
     element: (
       <ProtectedAdmin>

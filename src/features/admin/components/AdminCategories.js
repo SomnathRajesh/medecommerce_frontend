@@ -100,16 +100,20 @@ function AdminCategories() {
                       <td className='py-3 px-6 text-left whitespace-nowrap'>
                         <div className='flex items-center'>
                           <div className='mr-2'></div>
-                          <span className='font-medium'>{category.label}</span>
+                          <span className='font-medium'>
+                            {category.label}
+                            {category.deleted ? '(deleted)' : null}
+                          </span>
                         </div>
                       </td>
                       <td className='py-3 px-6 text-center'>
                         <div className='flex item-center justify-center'>
                           <div className='w-6 mr-2 transform hover:text-purple-500 hover:scale-110'>
-                            <PencilIcon
-                              className='w-8 h-8'
-                              onClick={(e) => handleEdit(category)}
-                            ></PencilIcon>
+                            <Link
+                              to={`/admin/category-form/edit/${category.id}`}
+                            >
+                              <PencilIcon className='w-8 h-8'></PencilIcon>
+                            </Link>
                           </div>
                         </div>
                       </td>

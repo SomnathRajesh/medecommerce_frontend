@@ -589,7 +589,8 @@
       "id": 4,
       "value": "skincare",
       "label": "Skincare",
-      "checked": false
+      "checked": false,
+      "deleted": true
     },
     {
       "id": 5,
@@ -598,7 +599,8 @@
       "checked": false
     },
     {
-      "label": "Homeopathy",
+      "label": "Allopathy",
+      "checked": false,
       "id": 6
     }
   ],

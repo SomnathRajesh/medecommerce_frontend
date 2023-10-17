@@ -115,3 +115,12 @@ export function updateCategory(update) {
     resolve({ data });
   });
 }
+
+export function fetchCategoryById(id) {
+  //url wont be hardcoded
+  return new Promise(async (resolve) => {
+    const response = await fetch('http://localhost:8000/category/' + id);
+    const data = await response.json();
+    resolve({ data });
+  });
+}
