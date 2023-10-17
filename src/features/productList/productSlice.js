@@ -184,6 +184,7 @@ export const productSlice = createSlice({
           (item) => item.id === action.payload.id
         );
         state.categories[index] = action.payload;
+        state.selectedCategory = action.payload;
       })
       .addCase(fetchCategoryByIdAsync.pending, (state) => {
         state.status = 'loading';

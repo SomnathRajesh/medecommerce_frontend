@@ -49,15 +49,51 @@ export default function Signup() {
           >
             <div>
               <label
-                htmlFor='email'
+                htmlFor='firstName'
+                className='block text-sm font-medium leading-6 text-gray-900'
+              >
+                First Name
+              </label>
+              <div className='mt-2'>
+                <input
+                  id='firstName'
+                  {...register('firstName', {
+                    required: 'First name is required',
+                  })}
+                  type='text'
+                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor='lastName'
+                className='block text-sm font-medium leading-6 text-gray-900'
+              >
+                Last Name
+              </label>
+              <div className='mt-2'>
+                <input
+                  id='lastName'
+                  {...register('lastName', {
+                    required: 'Last name is required',
+                  })}
+                  type='text'
+                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor='userEmail'
                 className='block text-sm font-medium leading-6 text-gray-900'
               >
                 Email address
               </label>
               <div className='mt-2'>
                 <input
-                  id='email'
-                  {...register('email', {
+                  id='userEmail'
+                  {...register('userEmail', {
                     required: 'email is required',
                     pattern: {
                       value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi,
@@ -67,8 +103,8 @@ export default function Signup() {
                   type='email'
                   className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 />
-                {errors.email && (
-                  <p className='text-red-500'>{errors.email.message}</p>
+                {errors.userEmail && (
+                  <p className='text-red-500'>{errors.userEmail.message}</p>
                 )}
               </div>
             </div>

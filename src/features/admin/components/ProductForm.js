@@ -38,12 +38,13 @@ function ProductForm() {
 
   useEffect(() => {
     if (selectedProduct && params.id) {
-      setValue('title', selectedProduct.title);
+      setValue('name', selectedProduct.name);
       setValue('description', selectedProduct.description);
-      setValue('category', selectedProduct.category);
+      setValue('categoryId', selectedProduct.categoryId);
       setValue('price', selectedProduct.price);
-      setValue('stock', selectedProduct.stock);
-      setValue('thumbnail', selectedProduct.thumbnail);
+      setValue('seller', selectedProduct.seller);
+      setValue('image', selectedProduct.image);
+      setValue('isAvailable', selectedProduct.isAvailable);
       // if (!selectedProduct.deleted) {
       //   setDel(false);
       // } else {
@@ -53,9 +54,9 @@ function ProductForm() {
   }, [selectedProduct, params.id, setValue]);
 
   const handleDelete = () => {
-    const product = { ...selectedProduct };
-    product.deleted = true;
-    dispatch(updateProductAsync(product));
+    const medicine = { ...selectedProduct };
+    medicine.deleted = true;
+    dispatch(updateProductAsync(medicine));
   };
 
   const handleCancel = (e) => {
@@ -68,17 +69,18 @@ function ProductForm() {
       <form
         noValidate
         onSubmit={handleSubmit((data) => {
-          const product = { ...data };
-          product.rating = 0;
-          product.price = +product.price;
-          product.stock = +product.stock;
+          const medicine = { ...data };
+          medicine.price = +medicine.price;
+          medicine.categoryId = +medicine.categoryId;
+          medicine.isAvailable = JSON.parse(medicine.isAvailable.toLowerCase());
+          medicine.deleted = false;
           if (params.id) {
-            product.id = params.id;
-            product.rating = selectedProduct.rating;
-            dispatch(updateProductAsync(product));
+            medicine.id = params.id;
+            dispatch(updateProductAsync(medicine));
             reset();
           } else {
-            dispatch(createProductAsync(product));
+            console.log(medicine);
+            dispatch(createProductAsync(medicine));
             reset();
           }
         })}
@@ -95,7 +97,7 @@ function ProductForm() {
               )}
               <div className='sm:col-span-6'>
                 <label
-                  htmlFor='title'
+                  htmlFor='name'
                   className='block text-sm font-medium leading-6 text-gray-900'
                 >
                   Medicine Name
@@ -104,11 +106,11 @@ function ProductForm() {
                   <div className='flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 '>
                     <input
                       type='text'
-                      {...register('title', {
+                      {...register('name', {
                         required: 'Medicine name is required',
                       })}
-                      id='title'
-                      autoComplete='title'
+                      id='name'
+                      autoComplete='name'
                       className='block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
                     />
                   </div>
@@ -129,6 +131,7 @@ function ProductForm() {
                       required: 'Description is required',
                     })}
                     rows={3}
+                    autoComplete='description'
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                     defaultValue={''}
                   />
@@ -136,20 +139,22 @@ function ProductForm() {
               </div>
               <div className='col-span-full'>
                 <label
-                  htmlFor='category'
+                  htmlFor='categoryId'
                   className='block text-sm font-medium leading-6 text-gray-900'
                 >
                   Category
                 </label>
                 <div className='mt-2'>
                   <select
-                    {...register('category', {
+                    {...register('categoryId', {
                       required: 'Category is required',
                     })}
                   >
                     <option value=''>--choose category--</option>
                     {categories.map((category) => (
-                      <option value={category.value}>{category.label}</option>
+                      <option value={category.id}>
+                        {category.medicineType}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -180,21 +185,21 @@ function ProductForm() {
               </div>
               <div className='sm:col-span-3'>
                 <label
-                  htmlFor='stock'
+                  htmlFor='seller'
                   className='block text-sm font-medium leading-6 text-gray-900'
                 >
-                  Stock
+                  Seller
                 </label>
                 <div className='mt-2'>
                   <div className='flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 '>
                     <input
-                      type='number'
-                      {...register('stock', {
-                        required: 'Stock is required',
+                      type='text'
+                      {...register('seller', {
+                        required: 'Seller is required',
                         min: 0,
                       })}
-                      id='stock'
-                      autoComplete='stock'
+                      id='seller'
+                      autoComplete='seller'
                       className='block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
                     />
                   </div>
@@ -211,11 +216,11 @@ function ProductForm() {
                   <div className='flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 '>
                     <input
                       type='text'
-                      {...register('thumbnail', {
+                      {...register('image', {
                         required: 'Image is required',
                       })}
-                      id='thumbnail'
-                      autoComplete='thumbnail'
+                      id='image'
+                      autoComplete='image'
                       className='block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
                     />
                   </div>
@@ -228,72 +233,46 @@ function ProductForm() {
             <div className='mt-10 space-y-10'>
               <fieldset>
                 <legend className='text-sm font-semibold leading-6 text-gray-900'>
-                  By Email
+                  Available?
                 </legend>
                 <div className='mt-6 space-y-6'>
-                  <div className='relative flex gap-x-3'>
-                    <div className='flex h-6 items-center'>
-                      <input
-                        id='comments'
-                        name='comments'
-                        type='checkbox'
-                        className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
-                      />
-                    </div>
-                    <div className='text-sm leading-6'>
-                      <label
-                        htmlFor='comments'
-                        className='font-medium text-gray-900'
-                      >
-                        Comments
-                      </label>
-                      <p className='text-gray-500'>
-                        Get notified when someones posts a comment on a posting.
-                      </p>
-                    </div>
+                  <div className='flex items-center gap-x-3'>
+                    <input
+                      id='yes'
+                      {...register('isAvailable', {
+                        required: 'Yes or No is required',
+                      })}
+                      //onChange={handlePayment}
+                      value='true'
+                      type='radio'
+                      //checked={paymentmethod === 'cash'}
+                      className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+                    />
+                    <label
+                      htmlFor='yes'
+                      className='block text-sm font-medium leading-6 text-gray-900'
+                    >
+                      Yes
+                    </label>
                   </div>
-                  <div className='relative flex gap-x-3'>
-                    <div className='flex h-6 items-center'>
-                      <input
-                        id='candidates'
-                        name='candidates'
-                        type='checkbox'
-                        className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
-                      />
-                    </div>
-                    <div className='text-sm leading-6'>
-                      <label
-                        htmlFor='candidates'
-                        className='font-medium text-gray-900'
-                      >
-                        Candidates
-                      </label>
-                      <p className='text-gray-500'>
-                        Get notified when a candidate applies for a job.
-                      </p>
-                    </div>
-                  </div>
-                  <div className='relative flex gap-x-3'>
-                    <div className='flex h-6 items-center'>
-                      <input
-                        id='offers'
-                        name='offers'
-                        type='checkbox'
-                        className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
-                      />
-                    </div>
-                    <div className='text-sm leading-6'>
-                      <label
-                        htmlFor='offers'
-                        className='font-medium text-gray-900'
-                      >
-                        Offers
-                      </label>
-                      <p className='text-gray-500'>
-                        Get notified when a candidate accepts or rejects an
-                        offer.
-                      </p>
-                    </div>
+                  <div className='flex items-center gap-x-3'>
+                    <input
+                      id='no'
+                      {...register('isAvailable', {
+                        required: 'Yes or No is required',
+                      })}
+                      //onChange={handlePayment}
+                      value='false'
+                      type='radio'
+                      //checked={paymentmethod === 'card'}
+                      className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+                    />
+                    <label
+                      htmlFor='no'
+                      className='block text-sm font-medium leading-6 text-gray-900'
+                    >
+                      No
+                    </label>
                   </div>
                 </div>
               </fieldset>
@@ -331,7 +310,7 @@ function ProductForm() {
       </form>
       {selectedProduct && (
         <Modal
-          title={`Delete ${selectedProduct.title}`}
+          title={`Delete ${selectedProduct.name}`}
           message='Are you sure you want to remove this medicine?'
           modOption='Delete'
           cancelOption='Cancel'

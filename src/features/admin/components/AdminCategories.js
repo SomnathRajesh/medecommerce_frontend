@@ -35,25 +35,6 @@ function AdminCategories() {
     setSort(sort);
   };
 
-  //   useEffect(() => {
-  //     //onst pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-  //     dispatch(fetchAllOrdersAsync({ sort, pagination }));
-  //   }, [dispatch, sort, page]);
-
-  const chooseColor = (status) => {
-    switch (status) {
-      case 'pending':
-        return 'bg-purple-200 text-purple-600';
-      case 'dispatched':
-        return 'bg-yellow-200 text-yellow-600';
-      case 'delivered':
-        return 'bg-green-200 text-green-600';
-      case 'cancelled':
-        return 'bg-red-200 text-red-600';
-      default:
-        return 'bg-purple-200 text-purple-600';
-    }
-  };
   return (
     <>
       {/* component */}
@@ -101,7 +82,7 @@ function AdminCategories() {
                         <div className='flex items-center'>
                           <div className='mr-2'></div>
                           <span className='font-medium'>
-                            {category.label}
+                            {category.medicineType}
                             {category.deleted ? '(deleted)' : null}
                           </span>
                         </div>

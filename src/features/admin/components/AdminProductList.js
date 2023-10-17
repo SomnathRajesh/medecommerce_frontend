@@ -79,10 +79,10 @@ export default function AdminProductList() {
     setPage(page);
   };
 
-  useEffect(() => {
-    const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
-  }, [dispatch, filter, sort, page]);
+  // useEffect(() => {
+  //   const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
+  //   dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
+  // }, [dispatch, filter, sort, page]);
 
   useEffect(() => {
     setPage(1);
@@ -176,13 +176,13 @@ export default function AdminProductList() {
                                     {section.options.map(
                                       (option, optionIdx) => (
                                         <div
-                                          key={option.value}
+                                          key={option.id}
                                           className='flex items-center'
                                         >
                                           <input
                                             id={`filter-mobile-${section.id}-${optionIdx}`}
                                             name={`${section.id}[]`}
-                                            defaultValue={option.value}
+                                            defaultValue={option.medicineType}
                                             type='checkbox'
                                             defaultChecked={option.checked}
                                             onClick={(e) =>
@@ -194,7 +194,9 @@ export default function AdminProductList() {
                                             htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
                                             className='ml-3 min-w-0 flex-1 text-gray-500'
                                           >
-                                            {option.label}
+                                            {option.deleted
+                                              ? null
+                                              : option.medicineType}
                                           </label>
                                         </div>
                                       )
@@ -323,13 +325,13 @@ export default function AdminProductList() {
                               <div className='space-y-4'>
                                 {section.options.map((option, optionIdx) => (
                                   <div
-                                    key={option.value}
+                                    key={option.medicineType}
                                     className='flex items-center'
                                   >
                                     <input
                                       id={`filter-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
-                                      defaultValue={option.value}
+                                      defaultValue={option.medicineType}
                                       type='checkbox'
                                       defaultChecked={option.checked}
                                       onClick={(e) =>
@@ -341,7 +343,9 @@ export default function AdminProductList() {
                                       htmlFor={`filter-${section.id}-${optionIdx}`}
                                       className='ml-3 text-sm text-gray-600'
                                     >
-                                      {option.label}
+                                      {option.deleted
+                                        ? null
+                                        : option.medicineType}
                                     </label>
                                   </div>
                                 ))}
@@ -375,38 +379,45 @@ export default function AdminProductList() {
                                 >
                                   <div className='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60'>
                                     <img
-                                      src={product.thumbnail}
-                                      alt={product.title}
+                                      src={product.image}
+                                      alt={product.name}
                                       className='h-full w-full object-cover object-center lg:h-full lg:w-full'
                                     />
                                   </div>
                                   <div className='mt-4 flex justify-between'>
                                     <div>
                                       <h3 className='text-sm text-gray-700'>
-                                        <div href={product.thumbnail}>
+                                        <div href={product.name}>
                                           <span
                                             aria-hidden='true'
                                             className='absolute inset-0'
                                           />
-                                          {product.title}
+                                          {product.name}
                                         </div>
                                       </h3>
                                       <p className='mt-1 text-sm text-gray-500'>
-                                        <StarIcon className='w-6 h-5 inline'></StarIcon>
-                                        {product.rating}
+                                        4
+                                        <StarIcon className='w-4 h-6 inline'></StarIcon>
                                       </p>
                                     </div>
                                     <p className='text-sm font-medium text-gray-900'>
                                       Rs {product.price}
                                     </p>
                                   </div>
-                                  {product.deleted && (
+                                  {product.isAvailable ? null : (
                                     <div>
                                       <p className='text-sm text-red-400'>
-                                        Product Deleted
+                                        Out of Stock
                                       </p>
                                     </div>
                                   )}
+                                  {product.deleted ? (
+                                    <div>
+                                      <p className='text-sm text-red-400'>
+                                        Deleted
+                                      </p>
+                                    </div>
+                                  ) : null}
                                 </div>
                                 <div className='mt-5'>
                                   <Link

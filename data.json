@@ -564,6 +564,18 @@
       "thumbnail": "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
       "rating": 0,
       "id": 31
+    },
+    {
+      "title": "Random Medicine",
+      "description": "Random medicine description",
+      "category": "Pain Relief",
+      "price": 100,
+      "stock": "",
+      "thumbnail": "https://i.dummyjson.com/data/products/20/thumbnail.jpg",
+      "isAvailable": "true",
+      "seller": "Raj Medicals",
+      "rating": 0,
+      "id": 32
     }
   ],
   "category": [
