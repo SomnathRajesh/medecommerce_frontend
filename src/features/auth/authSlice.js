@@ -5,6 +5,8 @@ const initialState = {
   loggedInUser: null,
   status: 'idle',
   error: null,
+  token: '',
+  isLoggedIn: false,
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -44,12 +46,12 @@ export const authSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    increment: (state) => {
+    authenicated: (state, action) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.value += 1;
+      state.token = action.payload.token;
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -61,14 +63,20 @@ export const authSlice = createSlice({
       })
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
+        sessionStorage.setItem('token', action.payload.token);
         state.loggedInUser = action.payload;
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
       })
       .addCase(userLoginAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(userLoginAsync.fulfilled, (state, action) => {
         state.status = 'idle';
+        sessionStorage.setItem('token', action.payload.token);
         state.loggedInUser = action.payload;
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
       })
       .addCase(userLoginAsync.rejected, (state, action) => {
         state.status = 'idle';
@@ -79,11 +87,14 @@ export const authSlice = createSlice({
       })
       .addCase(signOutAsync.fulfilled, (state, action) => {
         state.status = 'idle';
+        sessionStorage.clear();
         state.loggedInUser = null;
+        state.isLoggedIn = false;
       });
   },
 });
 
+export const { authenicated } = authSlice.actions;
 export const selectLoggedInUser = (state) => state.auth.loggedInUser;
 export const selectError = (state) => state.auth.error;
 

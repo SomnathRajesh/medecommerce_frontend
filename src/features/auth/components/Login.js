@@ -38,7 +38,10 @@ export default function Login() {
             className='space-y-6'
             onSubmit={handleSubmit((data) => {
               dispatch(
-                userLoginAsync({ email: data.email, password: data.password })
+                userLoginAsync({
+                  userEmail: data.email,
+                  password: data.password,
+                })
               );
             })}
           >

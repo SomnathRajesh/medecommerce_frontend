@@ -14,7 +14,10 @@ import {
   createOrderAsync,
   selectCurrentOrder,
 } from '../features/order/orderSlice';
-import { selectUserInfo, updateUserAsync } from '../features/user/userSlice';
+import {
+  selectUserInfo,
+  updateUserAddressAsync,
+} from '../features/user/userSlice';
 
 function Checkout() {
   const items = useSelector(selectItems);
@@ -87,7 +90,7 @@ function Checkout() {
               noValidate
               onSubmit={handleSubmit((data) => {
                 dispatch(
-                  updateUserAsync({
+                  updateUserAddressAsync({
                     ...user,
                     addresses: [...user.addresses, data],
                   })

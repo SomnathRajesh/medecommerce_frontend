@@ -16,17 +16,21 @@ const user = {
   admin: '',
 };
 const navigation = [
-  { name: 'Products', link: '/', user: true },
+  { name: 'Products', link: '/', User: true },
   { name: 'Products', link: '/', guest: true },
-  { name: 'Products', link: '/admin', admin: true },
-  { name: 'Orders', link: '/admin/orders', admin: true },
-  { name: 'Users', link: '/admin/users', admin: true },
-  { name: 'Categories', link: '/admin/categories', admin: true },
+  { name: 'Products', link: '/admin', Admin: true },
+  { name: 'Orders', link: '/admin/orders', Admin: true },
+  { name: 'Users', link: '/admin/users', Admin: true },
+  { name: 'Categories', link: '/admin/categories', Admin: true },
 ];
 const userNavigation = [
-  { name: 'My Profile', link: '/profile' },
-  { name: 'My orders', link: '/orders' },
-  { name: 'Sign out', link: '/logout' },
+  { name: 'My Profile', link: '/profile', User: true },
+  { name: 'My orders', link: '/orders', User: true },
+  { name: 'Sign out', link: '/logout', User: true },
+  { name: 'Log In', link: '/login', guest: true },
+  { name: 'Sign Up', link: '/signup', guest: true },
+  { name: 'My Profile', link: '/profile', Admin: true },
+  { name: 'Sign out', link: '/logout', Admin: true },
 ];
 
 function classNames(...classes) {
@@ -132,21 +136,23 @@ function Navbar({ children }) {
                         leaveTo='transform opacity-0 scale-95'
                       >
                         <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                          {userNavigation.map((item) => (
-                            <Menu.Item key={item.name}>
-                              {({ active }) => (
-                                <Link
-                                  to={item.link}
-                                  className={classNames(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
-                                  )}
-                                >
-                                  {item.name}
-                                </Link>
-                              )}
-                            </Menu.Item>
-                          ))}
+                          {userNavigation.map((item) =>
+                            item[userRole] ? (
+                              <Menu.Item key={item.name}>
+                                {({ active }) => (
+                                  <Link
+                                    to={item.link}
+                                    className={classNames(
+                                      active ? 'bg-gray-100' : '',
+                                      'block px-4 py-2 text-sm text-gray-700'
+                                    )}
+                                  >
+                                    {item.name}
+                                  </Link>
+                                )}
+                              </Menu.Item>
+                            ) : null
+                          )}
                         </Menu.Items>
                       </Transition>
                     </Menu>

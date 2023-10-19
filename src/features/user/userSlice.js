@@ -1,10 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
+  addUserAddress,
+  deleteUserAddress,
   fetchAllUsers,
   fetchCount,
   fetchLoggedInUser,
+  fetchLoggedInUserAddresses,
   fetchLoggedInUserOrders,
   updateUser,
+  updateUserAddress,
 } from './userAPI';
 
 const initialState = {
@@ -12,17 +16,31 @@ const initialState = {
   userInfo: null,
   userOrders: [],
   status: 'idle',
+  userAddresses: [],
 };
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched. Thunks are
-// typically used to make async requests.
 export const fetchLoggedInUserAsync = createAsyncThunk(
   'user/fetchLoggedInUser',
   async (user) => {
     const response = await fetchLoggedInUser(user);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+
+export const fetchLoggedInUserAddressesAsync = createAsyncThunk(
+  'user/fetchLoggedInUserAddresses',
+  async (user) => {
+    const response = await fetchLoggedInUserAddresses(user);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+
+export const addUserAddressAsync = createAsyncThunk(
+  'user/addUserAddress',
+  async (user) => {
+    const response = await addUserAddress(user);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -46,12 +64,21 @@ export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
   }
 );
 
-export const updateUserAsync = createAsyncThunk(
-  'user/updateUser',
+export const updateUserAddressAsync = createAsyncThunk(
+  'user/updateUserAddress',
   async (update) => {
-    const response = await updateUser(update);
+    const response = await updateUserAddress(update);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
+  }
+);
+
+export const deleteUserAddressAsync = createAsyncThunk(
+  'user/deleteUserAddress',
+  async (id) => {
+    const response = await deleteUserAddress(id);
+    // The value we return becomes the `fulfilled` action payload
+    return { success: response.success, id };
   }
 );
 
@@ -86,12 +113,15 @@ export const userSlice = createSlice({
         state.status = 'idle';
         state.userOrders = action.payload;
       })
-      .addCase(updateUserAsync.pending, (state) => {
+      .addCase(updateUserAddressAsync.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(updateUserAsync.fulfilled, (state, action) => {
+      .addCase(updateUserAddressAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.userInfo = action.payload;
+        const index = state.userAddresses.findIndex(
+          (item) => item.id === action.payload.id
+        );
+        state.userAddresses[index] = action.payload;
       })
       .addCase(fetchAllUsersAsync.pending, (state) => {
         state.status = 'loading';
@@ -99,6 +129,32 @@ export const userSlice = createSlice({
       .addCase(fetchAllUsersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.users = action.payload;
+      })
+      .addCase(fetchLoggedInUserAddressesAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchLoggedInUserAddressesAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.userAddresses = action.payload;
+      })
+      .addCase(addUserAddressAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(addUserAddressAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.userAddresses.push(action.payload);
+      })
+      .addCase(deleteUserAddressAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(deleteUserAddressAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        if (action.payload.success) {
+          console.log(action.payload);
+          state.userAddresses = state.userAddresses.filter(
+            (address) => address.id !== action.payload.id
+          );
+        }
       });
   },
 });
@@ -114,4 +170,5 @@ export const { increment } = userSlice.actions;
 export const selectUserOrders = (state) => state.user.userOrders;
 export const selectUserInfo = (state) => state.user.userInfo;
 export const selectAllUsers = (state) => state.user.users;
+export const selectLoggedInUserAddresses = (state) => state.user.userAddresses;
 export default userSlice.reducer;

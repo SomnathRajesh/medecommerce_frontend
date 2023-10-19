@@ -19,7 +19,7 @@ import AdminProductFormPage from './pages/AdminProductForm';
 import AdminUsersPage from './pages/AdminUsersPage';
 import AdminCategoriesPage from './pages/AdminCategoriesPage';
 import AdminCategoryFormPage from './pages/AdminCategoryForm';
-import { selectLoggedInUser } from './features/auth/authSlice';
+import { authenicated, selectLoggedInUser } from './features/auth/authSlice';
 import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
 import './App.css';
 import { useSelector } from 'react-redux';
@@ -176,10 +176,18 @@ function App() {
   const user = useSelector(selectLoggedInUser);
   useEffect(() => {
     if (user && user.id) {
-      dispatch(fetchItemsByUserIdAsync(user));
+      //dispatch(fetchItemsByUserIdAsync(user));
       dispatch(fetchLoggedInUserAsync(user));
     }
   }, [dispatch, user]);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (token !== undefined && token !== null) {
+      dispatch(authenicated({ token }));
+    }
+  }, [dispatch]);
+
   return (
     <div className='App'>
       <Provider template={AlertTemplate} {...options}>
