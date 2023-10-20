@@ -29,8 +29,8 @@ export const createOrderAsync = createAsyncThunk(
 
 export const fetchAllOrdersAsync = createAsyncThunk(
   'order/fetchAllOrders',
-  async ({ sort, pagination }) => {
-    const response = await fetchAllOrders({ sort, pagination });
+  async () => {
+    const response = await fetchAllOrders();
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -71,8 +71,7 @@ export const orderSlice = createSlice({
       })
       .addCase(fetchAllOrdersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.orders = action.payload.orders;
-        state.totalOrders = action.payload.totalOrders;
+        state.orders = action.payload;
       })
       .addCase(updateOrderAsync.pending, (state) => {
         state.status = 'loading';
@@ -82,7 +81,9 @@ export const orderSlice = createSlice({
         const index = state.orders.findIndex(
           (order) => order.id === action.payload.id
         );
-        state.orders[index] = action.payload;
+        if (index !== -1) {
+          state.orders[index] = action.payload;
+        }
       });
   },
 });
@@ -94,7 +95,7 @@ export const { resetOrder } = orderSlice.actions;
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectCurrentOrder = (state) => state.order.currentOrder;
 export const selectOrders = (state) => state.order.orders;
-export const selectTotalOrders = (state) => state.order.totalOrders;
+//export const selectTotalOrders = (state) => state.order.totalOrders;
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

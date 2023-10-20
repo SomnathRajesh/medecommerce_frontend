@@ -19,7 +19,7 @@ function AdminOrders() {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const orders = useSelector(selectOrders);
-  const totalOrders = useSelector(selectTotalOrders);
+  //const totalOrders = useSelector(selectTotalOrders);
   const [editableOrderId, setEditableOrderId] = useState(-1);
   const [sort, setSort] = useState({});
   const handleEdit = (order) => {
@@ -31,9 +31,9 @@ function AdminOrders() {
     dispatch(updateOrderAsync(updatedOrder));
     setEditableOrderId(-1);
   };
-  const handlePage = (page) => {
-    setPage(page);
-  };
+  // const handlePage = (page) => {
+  //   setPage(page);
+  // };
 
   const handleSort = (sortOption) => {
     const sort = { _sort: sortOption.sort, _order: sortOption.order };
@@ -41,9 +41,9 @@ function AdminOrders() {
   };
 
   useEffect(() => {
-    const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    dispatch(fetchAllOrdersAsync({ sort, pagination }));
-  }, [dispatch, sort, page]);
+    //const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
+    dispatch(fetchAllOrdersAsync());
+  }, []);
 
   const chooseColor = (status) => {
     switch (status) {
@@ -104,6 +104,7 @@ function AdminOrders() {
                           <ArrowDownIcon className='w-4 h-4 inline'></ArrowDownIcon>
                         ))}
                     </th>
+                    <th className='py-3 px-6 text-center'>Order By</th>
                     <th className='py-3 px-6 text-center'>Shipping Address</th>
                     <th className='py-3 px-6 text-center'>Status</th>
                     <th className='py-3 px-6 text-center'>Actions</th>
@@ -119,16 +120,17 @@ function AdminOrders() {
                         </div>
                       </td>
                       <td className='py-3 px-6 text-left'>
-                        {order.items.map((item) => (
+                        {order.details.map((item) => (
                           <div className='flex items-center'>
                             <div className='mr-2'>
                               <img
                                 className='w-6 h-6 rounded-full'
-                                src={item.thumbnail}
+                                src={item.medicine.image}
                               />
                             </div>
                             <span>
-                              {item.title}-#{item.quantity}-{item.price}
+                              {item.medicine.name}-#{item.quantity}-
+                              {item.medicine.price}
                             </span>
                           </div>
                         ))}
@@ -139,20 +141,30 @@ function AdminOrders() {
                         </div>
                       </td>
                       <td className='py-3 px-6 text-center'>
+                        <div className='flex items-center justify-center'>
+                          {order.user.userEmail}
+                        </div>
+                      </td>
+
+                      <td className='py-3 px-6 text-center'>
                         <div className=''>
                           <div>
-                            <strong>{order.selectedAddress.name}</strong>,
+                            <strong>{order.address.firstName}</strong>{' '}
+                            <strong>{order.address.lastName}</strong>,
                           </div>
-                          <div>{order.selectedAddress.street},</div>
-                          <div>{order.selectedAddress.city},</div>
-                          <div>{order.selectedAddress.state},</div>
-                          <div>{order.selectedAddress.pinCode},</div>
-                          <div>{order.selectedAddress.phone}</div>
+                          <div>{order.address.street},</div>
+                          <div>{order.address.city},</div>
+                          <div>{order.address.state},</div>
+                          <div>{order.address.pinCode},</div>
+                          <div>{order.address.phone}</div>
                         </div>
                       </td>
                       <td className='py-3 px-6 text-center'>
                         {order.id === editableOrderId ? (
-                          <select onChange={(e) => handleUpdate(e, order)}>
+                          <select
+                            onChange={(e) => handleUpdate(e, order)}
+                            value={order.status}
+                          >
                             <option value='pending'>Pending</option>
                             <option value='dispatched'>Dispatched</option>
                             <option value='delivered'>Delivered</option>
@@ -170,12 +182,6 @@ function AdminOrders() {
                       </td>
                       <td className='py-3 px-6 text-center'>
                         <div className='flex item-center justify-center'>
-                          <div className='w-6 mr-4 transform hover:text-purple-500 hover:scale-110'>
-                            <EyeIcon
-                              className='w-8 h-8'
-                              onClick={(e) => handleShow(order)}
-                            ></EyeIcon>
-                          </div>
                           <div className='w-6 mr-2 transform hover:text-purple-500 hover:scale-110'>
                             <PencilIcon
                               className='w-8 h-8'
@@ -191,12 +197,12 @@ function AdminOrders() {
             </div>
           </div>
         </div>
-        <Pagination
+        {/* <Pagination
           page={page}
           setPage={setPage}
           handlePage={handlePage}
           totalItems={totalOrders}
-        ></Pagination>
+        ></Pagination> */}
       </div>
     </>
   );

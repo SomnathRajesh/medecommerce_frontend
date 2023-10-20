@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
@@ -15,9 +15,14 @@ import {
   selectCurrentOrder,
 } from '../features/order/orderSlice';
 import {
+  addUserAddressAsync,
+  fetchLoggedInUserAddressesAsync,
+  selectLoggedInUserAddresses,
   selectUserInfo,
   updateUserAddressAsync,
 } from '../features/user/userSlice';
+import { selectLoggedInUser } from '../features/auth/authSlice';
+import { addUserAddress } from '../features/user/userAPI';
 
 function Checkout() {
   const items = useSelector(selectItems);
@@ -31,39 +36,51 @@ function Checkout() {
     formState: { errors },
   } = useForm();
   const user = useSelector(selectUserInfo);
+  const userRole = useSelector(selectLoggedInUser);
+  const addresses = useSelector(selectLoggedInUserAddresses);
   const currentOrder = useSelector(selectCurrentOrder);
   const totalAmount = items.reduce(
-    (amount, item) => item.price * item.quantity + amount,
+    (amount, item) => item.medicine.price * item.quantity + amount,
     0
   );
   const totalItems = items.reduce((totalQ, item) => item.quantity + totalQ, 0);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentmethod, setPaymentMethod] = useState('cash');
+  const userId = user.id;
   const handleQuantity = (e, item) => {
-    dispatch(updateCartAsync({ ...item, quantity: +e.target.value }));
+    const updateCart = { ...item, quantity: +e.target.value };
+    delete updateCart['medicine'];
+    delete updateCart['user'];
+    dispatch(updateCartAsync(updateCart));
   };
   const handleRemove = (e, id) => {
     dispatch(deleteItemFromCartAsync(id));
   };
   const handleAddress = (e) => {
-    setSelectedAddress(user.addresses[e.target.value]);
+    const intValue = parseInt(e.target.value, 10);
+    console.log(intValue);
+    setSelectedAddress(intValue);
   };
 
-  const handlePayment = (e) => {
-    setPaymentMethod(e.target.value);
-  };
+  // const handlePayment = (e) => {
+  //   setPaymentMethod(e.target.value);
+  // };
+
+  useEffect(() => {
+    dispatch(fetchLoggedInUserAddressesAsync(userRole.id));
+  }, []);
 
   const handleOrder = (e) => {
-    if (selectedAddress && paymentmethod) {
+    if (selectedAddress) {
       const order = {
         items,
         totalAmount,
         totalItems,
-        user,
-        paymentmethod,
-        selectedAddress,
+        userId,
+        addressId: selectedAddress,
         status: 'pending',
       };
+      console.log(order);
       dispatch(createOrderAsync(order));
       //Redirect to order-success page
     } else {
@@ -89,10 +106,11 @@ function Checkout() {
               className='bg-white px-5 py-12 mt-12'
               noValidate
               onSubmit={handleSubmit((data) => {
+                const userId = userRole.id;
                 dispatch(
-                  updateUserAddressAsync({
-                    ...user,
-                    addresses: [...user.addresses, data],
+                  addUserAddressAsync({
+                    ...data,
+                    userId,
                   })
                 );
                 reset();
@@ -177,7 +195,7 @@ function Checkout() {
                       </label>
                       <div className='mt-2'>
                         <input
-                          type='tel'
+                          type='text'
                           {...register('phone', {
                             required: 'Phone number is required',
                           })}
@@ -190,7 +208,7 @@ function Checkout() {
 
                     <div className='col-span-full'>
                       <label
-                        htmlFor='street-address'
+                        htmlFor='street'
                         className='block text-sm font-medium leading-6 text-gray-900'
                       >
                         Street address
@@ -292,7 +310,7 @@ function Checkout() {
                     Choose from existing address
                   </p>
                   <ul role='list' className='divide-y divide-gray-100'>
-                    {user.addresses.map((address, index) => (
+                    {addresses.map((address, index) => (
                       <li
                         key={address.id}
                         className='flex justify-between gap-x-6 px-5 py-5 border-2 border-gray-200'
@@ -302,7 +320,7 @@ function Checkout() {
                             onChange={handleAddress}
                             name='address'
                             type='radio'
-                            value={index}
+                            value={address.id}
                             className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
                           />
                           <div className='min-w-0 flex-auto'>
@@ -332,7 +350,7 @@ function Checkout() {
                     ))}
                   </ul>
 
-                  <div className='mt-10 space-y-10'>
+                  {/* <div className='mt-10 space-y-10'>
                     <fieldset>
                       <legend className='text-sm font-semibold leading-6 text-gray-900'>
                         Payment Method
@@ -377,7 +395,7 @@ function Checkout() {
                         </div>
                       </div>
                     </fieldset>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </form>
@@ -394,8 +412,8 @@ function Checkout() {
                       <li key={item.id} className='flex py-6'>
                         <div className='h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200'>
                           <img
-                            src={item.thumbnail}
-                            alt={item.title}
+                            src={item.medicine.image}
+                            alt={item.medicine.name}
                             className='h-full w-full object-cover object-center'
                           />
                         </div>
@@ -404,7 +422,7 @@ function Checkout() {
                           <div>
                             <div className='flex justify-between text-base font-medium text-gray-900'>
                               <h3>
-                                <a href={item.href}>{item.title}</a>
+                                <p className='ml-4'>{item.medicine.name}</p>
                               </h3>
                               <p className='ml-4'>{item.price}</p>
                             </div>

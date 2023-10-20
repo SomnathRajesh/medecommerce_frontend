@@ -6,6 +6,7 @@ import {
   resetCart,
   updateCart,
 } from './cartAPI';
+import { act } from 'react-dom/test-utils';
 
 const initialState = {
   items: [],
@@ -49,7 +50,7 @@ export const deleteItemFromCartAsync = createAsyncThunk(
   async (itemId) => {
     const response = await deleteItemFromCart(itemId);
     // The value we return becomes the `fulfilled` action payload
-    return response.data;
+    return { success: response.success, itemId };
   }
 );
 
@@ -84,14 +85,23 @@ export const cartSlice = createSlice({
       })
       .addCase(addToCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.items.push(action.payload);
+        const newItems = action.payload.filter((item) => {
+          return state.items.every(
+            (existingItem) => existingItem.id !== item.id
+          );
+        });
+        state.items = [...state.items, ...newItems];
       })
       .addCase(fetchItemsByUserIdAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchItemsByUserIdAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.items = action.payload;
+        if (action.payload.length === 0) {
+          state.items = [];
+        } else {
+          state.items = action.payload;
+        }
       })
       .addCase(updateCartAsync.pending, (state) => {
         state.status = 'loading';
@@ -99,19 +109,22 @@ export const cartSlice = createSlice({
       .addCase(updateCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         const index = state.items.findIndex(
-          (item) => item.id === action.payload.id
+          (item) => item.id === action.payload[0].id
         );
-        state.items[index] = action.payload;
+        if (index !== -1) {
+          state.items[index] = action.payload[0];
+        }
       })
       .addCase(deleteItemFromCartAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(deleteItemFromCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index = state.items.findIndex(
-          (item) => item.id === action.payload.id
-        );
-        state.items.splice(index, 1);
+        if (action.payload.success) {
+          state.items = state.items.filter(
+            (item) => item.id !== action.payload.itemId
+          );
+        }
       })
       .addCase(resetCartAsync.pending, (state) => {
         state.status = 'loading';
@@ -130,8 +143,5 @@ export const { increment } = cartSlice.actions;
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectItems = (state) => state.cart.items;
 export const selectCartStatus = (state) => state.cart.status;
-
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
 
 export default cartSlice.reducer;

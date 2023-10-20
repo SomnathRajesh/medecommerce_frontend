@@ -28,9 +28,7 @@ export function fetchAllUsers() {
 
 export function fetchLoggedInUserOrders(userId) {
   return new Promise(async (resolve) => {
-    const response = await fetch(
-      'http://localhost:8000/orders/?user.id=' + userId
-    );
+    const response = await fetch('https://localhost:7203/api/Orders/' + userId);
     const data = await response.json();
     resolve({ data });
   });

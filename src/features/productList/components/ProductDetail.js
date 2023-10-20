@@ -29,18 +29,20 @@ export default function ProductDetail() {
 
   const handleCart = (e) => {
     e.preventDefault();
-    if (items.findIndex((item) => item.productId === product.id) < 0) {
-      const newItem = {
-        ...product,
-        productId: product.id,
-        quantity: 1,
-        user: user.id,
-      };
-      delete newItem['id'];
-      dispatch(addToCartAsync(newItem));
-      alert.success('Item added to cart');
+    if (user) {
+      if (items.findIndex((item) => item.medId === product.id) < 0) {
+        const newItem = {
+          medId: product.id,
+          quantity: 1,
+          userId: user.id,
+        };
+        dispatch(addToCartAsync(newItem));
+        alert.success('Item added to cart');
+      } else {
+        alert.error('Already added to cart!');
+      }
     } else {
-      alert.error('Already added to cart!');
+      alert.error('Login to add to cart');
     }
   };
 

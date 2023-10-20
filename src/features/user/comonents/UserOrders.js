@@ -29,12 +29,12 @@ export default function UserOrders() {
               </h3>
               <div className='flow-root'>
                 <ul role='list' className='-my-6 divide-y divide-gray-200'>
-                  {order.items.map((item) => (
+                  {order.details.map((item) => (
                     <li key={item.id} className='flex py-6'>
                       <div className='h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200'>
                         <img
-                          src={item.thumbnail}
-                          alt={item.title}
+                          src={item.medicine.image}
+                          alt={item.medicine.name}
                           className='h-full w-full object-cover object-center'
                         />
                       </div>
@@ -43,7 +43,7 @@ export default function UserOrders() {
                         <div>
                           <div className='flex justify-between text-base font-medium text-gray-900'>
                             <h3>
-                              <a href={item.href}>{item.title}</a>
+                              <p className='ml-4'>{item.name}</p>
                             </h3>
                             <p className='ml-4'>{item.price}</p>
                           </div>
@@ -80,26 +80,25 @@ export default function UserOrders() {
               <div className='flex min-w-0 gap-x-4'>
                 <div className='min-w-0 flex-auto'>
                   <p className='text-sm font-semibold leading-6 text-gray-900'>
-                    {order.selectedAddress.firstName}{' '}
-                    {order.selectedAddress.lastName}
+                    {order.address.firstName} {order.address.lastName}
                   </p>
                   <p className='mt-1 truncate text-xs leading-5 text-gray-500'>
-                    {order.selectedAddress.street}
+                    {order.address.street}
                   </p>
                   <p className='mt-1 truncate text-xs leading-5 text-gray-500'>
-                    {order.selectedAddress.city}
+                    {order.address.city}
                   </p>
                   <p className='mt-1 truncate text-xs leading-5 text-gray-500'>
-                    {order.selectedAddress.state}
+                    {order.address.state}
                   </p>
                 </div>
               </div>
               <div className='hidden shrink-0 sm:flex sm:flex-col sm:items-end'>
                 <p className='text-sm leading-6 text-gray-900'>
-                  Pincode: {order.selectedAddress.pinCode}
+                  Pincode: {order.address.pinCode}
                 </p>
                 <p className='text-sm leading-6 text-gray-900'>
-                  Phone: {order.selectedAddress.phone}
+                  Phone: {order.address.phone}
                 </p>
               </div>
             </div>

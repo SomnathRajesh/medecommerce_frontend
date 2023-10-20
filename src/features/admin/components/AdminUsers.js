@@ -82,15 +82,16 @@ function AdminUsers() {
                           <ArrowDownIcon className='w-4 h-4 inline'></ArrowDownIcon>
                         ))} */}
                     </th>
-                    <th className='py-3 px-6 text-left'>Email</th>
+                    <th className='py-3 px-6 text-center'>Name</th>
+                    <th className='py-3 px-6 text-center'>Email</th>
                     <th className='py-3 px-6 text-center'>Role</th>
-                    <th className='py-3 px-6 text-center'>Addresses</th>
+                    {/* <th className='py-3 px-6 text-center'>Addresses</th> */}
                   </tr>
                 </thead>
                 <tbody className='text-gray-600 text-sm font-light'>
                   {users.map((user) => (
                     <tr className='border-b border-gray-200 hover:bg-gray-100'>
-                      <td className='py-3 px-6 text-left whitespace-nowrap'>
+                      <td className='py-3 px-6 text-center whitespace-nowrap'>
                         <div className='flex items-center'>
                           <div className='mr-2'></div>
                           <span className='font-medium'>{user.id}</span>
@@ -98,15 +99,20 @@ function AdminUsers() {
                       </td>
                       <td className='py-3 px-6 text-center'>
                         <div className='flex items-center justify-center'>
-                          {user.email}
+                          {user.firstName} {user.lastName}
                         </div>
                       </td>
                       <td className='py-3 px-6 text-center'>
                         <div className='flex items-center justify-center'>
-                          {user.role}
+                          {user.userEmail}
                         </div>
                       </td>
-                      <td className='py-3 px-6 text-left'>
+                      <td className='py-3 px-6 text-center'>
+                        <div className='flex items-center justify-center'>
+                          {user.roleId === 1 ? 'Admin' : 'User'}
+                        </div>
+                      </td>
+                      {/* <td className='py-3 px-6 text-left'>
                         {user.addresses.map((address) => (
                           <div className=''>
                             <div>
@@ -120,7 +126,7 @@ function AdminUsers() {
                             <div>{address.phone}</div>
                           </div>
                         ))}
-                      </td>
+                      </td> */}
 
                       {/* <td className='py-3 px-6 text-center'>
                         {order.id === editableOrderId ? (
@@ -140,7 +146,7 @@ function AdminUsers() {
                           </span>
                         )}
                       </td> */}
-                      <td className='py-3 px-6 text-center'>
+                      {/* <td className='py-3 px-6 text-center'>
                         <div className='flex item-center justify-center'>
                           <div className='w-6 mr-4 transform hover:text-purple-500 hover:scale-110'>
                             <EyeIcon
@@ -155,7 +161,7 @@ function AdminUsers() {
                             ></PencilIcon>
                           </div>
                         </div>
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
