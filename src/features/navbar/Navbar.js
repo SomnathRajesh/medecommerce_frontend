@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectItems } from '../cart/cartSlice';
 import { selectLoggedInUser } from '../auth/authSlice';
+import { selectUserInfo } from '../user/userSlice';
 
 const user = {
   name: 'Tom Cook',
@@ -40,6 +41,7 @@ function classNames(...classes) {
 function Navbar({ children }) {
   const items = useSelector(selectItems);
   const loggedInUser = useSelector(selectLoggedInUser);
+  const userInfo = useSelector(selectUserInfo);
   const isLoggedIn = loggedInUser !== null;
 
   const userRole = isLoggedIn ? loggedInUser.role : 'guest';
@@ -90,7 +92,7 @@ function Navbar({ children }) {
                     <Link to='/cart'>
                       <button
                         type='button'
-                        className='relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+                        className='relative rounded-full px-4 bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
                       >
                         <span className='absolute -inset-1.5' />
                         <span className='sr-only'>View Shopping Cart</span>
@@ -105,7 +107,17 @@ function Navbar({ children }) {
                         {items.length}
                       </span>
                     )}
-
+                    {isLoggedIn ? (
+                      <div className='ml-3'>
+                        <div className='text-base font-medium leading-none text-white'>
+                          {userInfo.firstName} {userInfo.lastName}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='text-base font-medium leading-none text-white'>
+                        Hello Guest
+                      </div>
+                    )}
                     {/* Profile dropdown */}
                     <Menu as='div' className='relative ml-3'>
                       <div>
@@ -178,40 +190,60 @@ function Navbar({ children }) {
 
             <Disclosure.Panel className='md:hidden'>
               <div className='space-y-1 px-2 pb-3 pt-2 sm:px-3'>
-                {navigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as='a'
-                    href={item.href}
-                    className={classNames(
-                      item.current
-                        ? 'bg-gray-900 text-white'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'block rounded-md px-3 py-2 text-base font-medium'
-                    )}
-                    aria-current={item.current ? 'page' : undefined}
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
+                {navigation.map((item) =>
+                  item[userRole] ? (
+                    <Disclosure.Button
+                      key={item.name}
+                      as='a'
+                      href={item.href}
+                      className={classNames(
+                        item.current
+                          ? 'bg-gray-900 text-white'
+                          : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                        'block rounded-md px-3 py-2 text-base font-medium'
+                      )}
+                      aria-current={item.current ? 'page' : undefined}
+                    >
+                      {item.name}
+                    </Disclosure.Button>
+                  ) : null
+                )}
               </div>
               <div className='border-t border-gray-700 pb-3 pt-4'>
                 <div className='flex items-center px-5'>
                   <div className='flex-shrink-0'>
-                    <img
-                      className='h-10 w-10 rounded-full'
-                      src={user.imageUrl}
-                      alt=''
-                    />
+                    {userRole === 'admin' ? (
+                      <img
+                        width='48'
+                        height='48'
+                        src='https://img.icons8.com/fluency/48/administrator-male.png'
+                        alt='administrator-male'
+                      />
+                    ) : (
+                      <img
+                        width='48'
+                        height='48'
+                        src='https://img.icons8.com/fluency/48/test-account.png'
+                        alt='test-account'
+                      />
+                    )}
                   </div>
-                  <div className='ml-3'>
+                  {isLoggedIn ? (
+                    <div className='ml-3'>
+                      <div className='text-base font-medium leading-none text-white'>
+                        {userInfo.firstName} {userInfo.lastName}
+                      </div>
+                      <div className='text-sm font-medium leading-none text-gray-400'>
+                        {userInfo.userEmail}
+                      </div>
+                    </div>
+                  ) : (
                     <div className='text-base font-medium leading-none text-white'>
-                      {user.name}
+                      Hello Guest
                     </div>
-                    <div className='text-sm font-medium leading-none text-gray-400'>
-                      {user.email}
-                    </div>
-                  </div>
+                  )}
+                </div>
+                <div className='mt-3 space-y-1 px-2'>
                   <Link to='/cart'>
                     <button
                       type='button'
@@ -232,16 +264,26 @@ function Navbar({ children }) {
                   )}
                 </div>
                 <div className='mt-3 space-y-1 px-2'>
-                  {userNavigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as='a'
-                      href={item.href}
-                      className='block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
+                  {userNavigation.map((item) =>
+                    item[userRole] ? (
+                      <Disclosure.Button
+                        key={item.name}
+                        className='block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
+                      >
+                        {({ active }) => (
+                          <Link
+                            to={item.link}
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'block px-4 py-2 text-sm text-gray-400'
+                            )}
+                          >
+                            {item.name}
+                          </Link>
+                        )}
+                      </Disclosure.Button>
+                    ) : null
+                  )}
                 </div>
               </div>
             </Disclosure.Panel>
