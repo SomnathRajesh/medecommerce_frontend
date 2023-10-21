@@ -43,19 +43,20 @@ export default function UserOrders() {
                         <div>
                           <div className='flex justify-between text-base font-medium text-gray-900'>
                             <h3>
-                              <p className='ml-4'>{item.name}</p>
+                              <p className='ml-4'>{item.medicine.name}</p>
                             </h3>
-                            <p className='ml-4'>{item.price}</p>
+
+                            <p className='ml-4'>
+                              <span>&#8377;</span>
+                              {item.medicine.price}
+                            </p>
                           </div>
                         </div>
                         <div className='flex flex-1 items-end justify-between text-sm'>
-                          <div className='text-gray-500'>
-                            <label
-                              htmlFor='quantity'
-                              className='inline mr-5 text-sm font-medium leading-6 text-gray-900'
-                            >
-                              Quantity:{item.quantity}
-                            </label>
+                          <div className='text-gray-900'>
+                            <h3>
+                              <p className='ml-4'>Quantity: {item.quantity}</p>
+                            </h3>
                           </div>
                         </div>
                       </div>
@@ -68,14 +69,16 @@ export default function UserOrders() {
             <div className='border-t border-gray-200 px-4 py-6 sm:px-6'>
               <div className='flex justify-between my-2 text-base font-medium text-gray-900'>
                 <p>Total</p>
-                <p>Rs {order.totalAmount}</p>
+                <p>
+                  <span>&#8377;</span> {order.totalAmount}
+                </p>
               </div>
               <div className='flex justify-between my-2 text-base font-medium text-gray-900'>
                 <p>Total Items in Order</p>
                 <p>{order.totalItems} items</p>
               </div>
             </div>
-            <p className='mt-0.5 text-sm text-gray-500'>Address</p>
+            <p className='mt-0.5 text-sm text-gray-500'>Delivery Address</p>
             <div className='flex justify-between gap-x-6 px-5 py-5 border-2 border-gray-200'>
               <div className='flex min-w-0 gap-x-4'>
                 <div className='min-w-0 flex-auto'>

@@ -24,8 +24,8 @@ export default function Signup() {
         <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
           <img
             className='mx-auto h-10 w-auto'
-            src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
-            alt='Your Company'
+            src='https://icon2.cleanpng.com/20190625/ekc/kisspng-logo-font-product-clip-art-brand-teachnest-online-school-5d12bb7aba8107.4684896315615087307639.jpg'
+            alt='ABC'
           />
           <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
             Create a New Account

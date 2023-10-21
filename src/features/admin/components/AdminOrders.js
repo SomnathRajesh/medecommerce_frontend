@@ -111,87 +111,108 @@ function AdminOrders() {
                   </tr>
                 </thead>
                 <tbody className='text-gray-600 text-sm font-light'>
-                  {orders.map((order) => (
-                    <tr className='border-b border-gray-200 hover:bg-gray-100'>
-                      <td className='py-3 px-6 text-left whitespace-nowrap'>
-                        <div className='flex items-center'>
-                          <div className='mr-2'></div>
-                          <span className='font-medium'>{order.id}</span>
-                        </div>
-                      </td>
-                      <td className='py-3 px-6 text-left'>
-                        {order.details.map((item) => (
+                  {orders
+                    .filter((order) => {
+                      return order;
+                    })
+                    .sort((a, b) => {
+                      if (sort._sort === 'totalAmount') {
+                        if (sort._order === 'asc') {
+                          return a.totalAmount - b.totalAmount;
+                        } else if (sort._order == 'desc') {
+                          return b.totalAmount - a.totalAmount;
+                        }
+                      } else if (sort._sort === 'id') {
+                        if (sort._order === 'asc') {
+                          return a.id - b.id;
+                        } else if (sort._order == 'desc') {
+                          return b.id - a.id;
+                        }
+                      }
+                      return 0;
+                    })
+                    .map((order) => (
+                      <tr className='border-b border-gray-200 hover:bg-gray-100'>
+                        <td className='py-3 px-6 text-left whitespace-nowrap'>
                           <div className='flex items-center'>
-                            <div className='mr-2'>
-                              <img
-                                className='w-6 h-6 rounded-full'
-                                src={item.medicine.image}
-                              />
+                            <div className='mr-2'></div>
+                            <span className='font-medium'>{order.id}</span>
+                          </div>
+                        </td>
+                        <td className='py-3 px-6 text-left'>
+                          {order.details.map((item) => (
+                            <div className='flex items-center'>
+                              <div className='mr-2'>
+                                <img
+                                  className='w-6 h-6 rounded-full'
+                                  src={item.medicine.image}
+                                />
+                              </div>
+                              <span>
+                                {item.medicine.name}-#{item.quantity}-
+                                <span>&#8377;</span>
+                                {item.medicine.price}
+                              </span>
                             </div>
-                            <span>
-                              {item.medicine.name}-#{item.quantity}-
-                              {item.medicine.price}
-                            </span>
+                          ))}
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex items-center justify-center'>
+                            {order.totalAmount}
                           </div>
-                        ))}
-                      </td>
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex items-center justify-center'>
-                          {order.totalAmount}
-                        </div>
-                      </td>
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex items-center justify-center'>
-                          {order.user.userEmail}
-                        </div>
-                      </td>
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex items-center justify-center'>
+                            {order.user.userEmail}
+                          </div>
+                        </td>
 
-                      <td className='py-3 px-6 text-center'>
-                        <div className=''>
-                          <div>
-                            <strong>{order.address.firstName}</strong>{' '}
-                            <strong>{order.address.lastName}</strong>,
+                        <td className='py-3 px-6 text-center'>
+                          <div className=''>
+                            <div>
+                              <strong>{order.address.firstName}</strong>{' '}
+                              <strong>{order.address.lastName}</strong>,
+                            </div>
+                            <div>{order.address.street},</div>
+                            <div>{order.address.city},</div>
+                            <div>{order.address.state},</div>
+                            <div>{order.address.pinCode},</div>
+                            <div>{order.address.phone}</div>
                           </div>
-                          <div>{order.address.street},</div>
-                          <div>{order.address.city},</div>
-                          <div>{order.address.state},</div>
-                          <div>{order.address.pinCode},</div>
-                          <div>{order.address.phone}</div>
-                        </div>
-                      </td>
-                      <td className='py-3 px-6 text-center'>
-                        {order.id === editableOrderId ? (
-                          <select
-                            onChange={(e) => handleUpdate(e, order)}
-                            value={order.status}
-                          >
-                            <option value='pending'>Pending</option>
-                            <option value='dispatched'>Dispatched</option>
-                            <option value='delivered'>Delivered</option>
-                            <option value='cancelled'>Cancelled</option>
-                          </select>
-                        ) : (
-                          <span
-                            className={`${chooseColor(
-                              order.status
-                            )} py-1 px-3 rounded-full text-xs`}
-                          >
-                            {order.status}
-                          </span>
-                        )}
-                      </td>
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex item-center justify-center'>
-                          <div className='w-6 mr-2 transform hover:text-purple-500 hover:scale-110'>
-                            <PencilIcon
-                              className='w-8 h-8'
-                              onClick={(e) => handleEdit(order)}
-                            ></PencilIcon>
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          {order.id === editableOrderId ? (
+                            <select
+                              onChange={(e) => handleUpdate(e, order)}
+                              value={order.status}
+                            >
+                              <option value='pending'>Pending</option>
+                              <option value='dispatched'>Dispatched</option>
+                              <option value='delivered'>Delivered</option>
+                              <option value='cancelled'>Cancelled</option>
+                            </select>
+                          ) : (
+                            <span
+                              className={`${chooseColor(
+                                order.status
+                              )} py-1 px-3 rounded-full text-xs`}
+                            >
+                              {order.status}
+                            </span>
+                          )}
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex item-center justify-center'>
+                            <div className='w-6 mr-2 transform hover:text-purple-500 hover:scale-110'>
+                              <PencilIcon
+                                className='w-8 h-8'
+                                onClick={(e) => handleEdit(order)}
+                              ></PencilIcon>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

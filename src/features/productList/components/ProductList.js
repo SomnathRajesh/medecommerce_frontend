@@ -29,7 +29,7 @@ import { ITEMS_PER_PAGE } from '../../../app/constant';
 import Pagination from '../../common/Pagination';
 import { Blocks } from 'react-loader-spinner';
 const sortOptions = [
-  { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
+  //{ name: 'Alphabetically', sort: 'rating', order: 'desc', current: false },
   { name: 'Price: Low to High', sort: 'price', order: 'asc', current: false },
   { name: 'Price: High to Low', sort: 'price', order: 'desc', current: false },
 ];
@@ -45,6 +45,8 @@ export default function ProductList() {
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
   const [page, setPage] = useState(1);
+  const [searchInput, setSearchInput] = useState('');
+  const [category, setCategory] = useState('');
   const totalItems = useSelector(selectTotalItems);
   const categories = useSelector(selectAllCategories);
   const status = useSelector(selectProductListStatus);
@@ -88,9 +90,9 @@ export default function ProductList() {
   //   dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
   // }, [dispatch, filter, sort, page]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [totalItems, sort]);
+  // useEffect(() => {
+  //   setPage(1);
+  // }, [totalItems, sort]);
 
   useEffect(() => {
     dispatch(fetchAllProductsAsync());
@@ -100,7 +102,7 @@ export default function ProductList() {
   return (
     <div>
       <div>
-        <div className='bg-white'>
+        <div className=''>
           <div>
             {/* Mobile filter dialog */}
             <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -190,9 +192,13 @@ export default function ProductList() {
                                             defaultValue={option.medicineType}
                                             type='checkbox'
                                             //defaultChecked={option.checked}
-                                            onClick={(e) =>
-                                              handleFilter(e, section, option)
-                                            }
+                                            onClick={(e) => {
+                                              if (e.target.checked) {
+                                                setCategory(e.target.value);
+                                              } else {
+                                                setCategory('');
+                                              }
+                                            }}
                                             className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
                                           />
                                           <label
@@ -219,11 +225,21 @@ export default function ProductList() {
               </Dialog>
             </Transition.Root>
 
-            <main className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-              <div className='flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24'>
-                <h1 className='text-4xl font-bold tracking-tight text-gray-900'>
-                  All Medicines
-                </h1>
+            <main className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 '>
+              <h1 className='text-center text-4xl font-bold tracking-tight text-gray-900'>
+                One stop destination for all the medicines you need!!
+              </h1>
+              <div className='flex items-baseline justify-between border-b border-gray-200 pb-2 pt-10'>
+                {/* Search input */}
+                <div className='mt-4 mb-4 '>
+                  <input
+                    type='text'
+                    placeholder='Search for medicines...'
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    className='border border-gray-800 p-2 w-full rounded-md lg:col-span-3'
+                  />
+                </div>
 
                 <div className='flex items-center'>
                   <Menu as='div' className='relative inline-block text-left'>
@@ -307,7 +323,7 @@ export default function ProductList() {
                         {({ open }) => (
                           <>
                             <h3 className='-my-3 flow-root'>
-                              <Disclosure.Button className='flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500'>
+                              <Disclosure.Button className='flex w-full items-center justify-between py-3 text-sm text-gray-400 hover:text-gray-500'>
                                 <span className='font-medium text-gray-900'>
                                   {section.name}
                                 </span>
@@ -339,9 +355,13 @@ export default function ProductList() {
                                       defaultValue={option.medicineType}
                                       type='checkbox'
                                       defaultChecked={option.checked}
-                                      onClick={(e) =>
-                                        handleFilter(e, section, option)
-                                      }
+                                      onClick={(e) => {
+                                        if (e.target.checked) {
+                                          setCategory(e.target.value);
+                                        } else {
+                                          setCategory('');
+                                        }
+                                      }}
                                       className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
                                     />
                                     <label
@@ -375,54 +395,86 @@ export default function ProductList() {
                       />
                     ) : null}
                     {
-                      <div className='bg-white'>
+                      <div className='bg-cyan-100'>
                         <div className='mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8'>
                           <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8'>
-                            {medicines.map((product) =>
-                              product.deleted ? null : (
-                                <Link to={`/product-detail/${product.id}`}>
-                                  <div
-                                    key={product.id}
-                                    className='group relative border-solid border-2 p-2 border-gray-200'
-                                  >
-                                    <div className='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60'>
-                                      <img
-                                        src={product.image}
-                                        alt={product.name}
-                                        className='h-full w-full object-cover object-center lg:h-full lg:w-full'
-                                      />
-                                    </div>
-                                    <div className='mt-4 flex justify-between'>
-                                      <div>
-                                        <h3 className='text-sm text-gray-700'>
-                                          <div href={product.image}>
-                                            <span
-                                              aria-hidden='true'
-                                              className='absolute inset-0'
-                                            />
-                                            {product.name}
-                                          </div>
-                                        </h3>
-                                        <p className='mt-1 text-sm text-gray-500'>
-                                          4
-                                          <StarIcon className='w-4 h-6 inline'></StarIcon>
+                            {medicines
+                              .filter((product) => {
+                                if (searchInput === '') {
+                                  return product;
+                                } else if (
+                                  product.name
+                                    .toLowerCase()
+                                    .includes(searchInput.toLowerCase())
+                                ) {
+                                  return product;
+                                }
+                              })
+                              .filter((product) => {
+                                if (category === '') {
+                                  return product;
+                                } else if (
+                                  product.category.medicineType === category
+                                ) {
+                                  return product;
+                                }
+                              })
+                              .sort((a, b) => {
+                                if (sort._sort === 'price') {
+                                  if (sort._order === 'asc') {
+                                    return a.price - b.price;
+                                  } else if (sort._order == 'desc') {
+                                    return b.price - a.price;
+                                  }
+                                }
+                                return 0;
+                              })
+                              .map((product) =>
+                                product.deleted ? null : (
+                                  <Link to={`/product-detail/${product.id}`}>
+                                    <div
+                                      key={product.id}
+                                      className='group relative border-solid border-2 p-2 border-gray-600'
+                                    >
+                                      <div className='aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60'>
+                                        <img
+                                          src={product.image}
+                                          alt={product.name}
+                                          className='h-full w-full object-cover object-center lg:h-full lg:w-full'
+                                        />
+                                      </div>
+                                      <div className='mt-4 flex justify-between'>
+                                        <div>
+                                          <h3 className='text-sm text-gray-700'>
+                                            <div href={product.image}>
+                                              <span
+                                                aria-hidden='true'
+                                                className='absolute inset-0'
+                                              />
+                                              {product.name}
+                                            </div>
+                                          </h3>
+                                          {/* <p className='mt-1 text-sm text-gray-500'>
+                                            4
+                                            <StarIcon className='w-4 h-6 inline'></StarIcon>
+                                          </p> */}
+                                        </div>
+                                        <p className='text-sm font-medium text-gray-900'>
+                                          <span>&#8377;</span>
+                                          {product.price}
                                         </p>
                                       </div>
-                                      <p className='text-sm font-medium text-gray-900'>
-                                        Rs {product.price}
-                                      </p>
+                                      {product.isAvailable ? null : (
+                                        <div>
+                                          <p className='text-sm text-red-400'>
+                                            Out of stock
+                                          </p>
+                                        </div>
+                                      )}
                                     </div>
-                                    {product.isAvailable ? null : (
-                                      <div>
-                                        <p className='text-sm text-red-400'>
-                                          Out of stock
-                                        </p>
-                                      </div>
-                                    )}
-                                  </div>
-                                </Link>
-                              )
-                            )}
+                                  </Link>
+                                )
+                              )}
                           </div>
                         </div>
                       </div>

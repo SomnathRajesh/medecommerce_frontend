@@ -16,8 +16,8 @@ const user = {
   admin: '',
 };
 const navigation = [
-  { name: 'Products', link: '/', User: true },
-  { name: 'Products', link: '/', guest: true },
+  //{ name: 'Products', link: '/', User: true },
+  //{ name: 'Products', link: '/', guest: true },
   { name: 'Products', link: '/admin', Admin: true },
   { name: 'Orders', link: '/admin/orders', Admin: true },
   { name: 'Users', link: '/admin/users', Admin: true },
@@ -25,7 +25,7 @@ const navigation = [
 ];
 const userNavigation = [
   { name: 'My Profile', link: '/profile', User: true },
-  { name: 'My orders', link: '/orders', User: true },
+  { name: 'My Orders', link: '/orders', User: true },
   { name: 'Sign out', link: '/logout', User: true },
   { name: 'Log In', link: '/login', guest: true },
   { name: 'Sign Up', link: '/signup', guest: true },
@@ -53,11 +53,14 @@ function Navbar({ children }) {
                 <div className='flex items-center'>
                   <div className='flex-shrink-0'>
                     <Link to='/'>
-                      <img
-                        className='h-8 w-8'
-                        src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500'
-                        alt='Your Company'
-                      />
+                      <div className='flex items-center'>
+                        <img
+                          className='h-15 w-10'
+                          src='https://icon2.cleanpng.com/20190625/ekc/kisspng-logo-font-product-clip-art-brand-teachnest-online-school-5d12bb7aba8107.4684896315615087307639.jpg'
+                          alt='ABC'
+                        ></img>
+                        <p className='text-white text-2xl ml-4'>Healthcare</p>
+                      </div>
                     </Link>
                   </div>
                   <div className='hidden md:block'>
@@ -246,15 +249,10 @@ function Navbar({ children }) {
         )}
       </Disclosure>
 
-      <header className='bg-white shadow'>
-        <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
-          <h1 className='text-3xl font-bold tracking-tight text-gray-900'>
-            ABC Healthcare
-          </h1>
-        </div>
-      </header>
       <main>
-        <div className='mx-auto max-w-7xl py-6 sm:px-6 lg:px-8'>{children}</div>
+        <div className='mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 bg-cyan-100'>
+          {children}
+        </div>
       </main>
     </div>
   );

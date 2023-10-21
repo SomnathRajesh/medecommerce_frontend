@@ -71,7 +71,11 @@ export default function Cart() {
                           {/* <a href={item.href}>{item.title}</a> */}
                           <p className='ml-4'>{item.medicine.name}</p>
                         </h3>
-                        <p className='ml-4'>{item.medicine.price}</p>
+
+                        <p className='ml-4'>
+                          <span>&#8377;</span>
+                          {item.medicine.price}
+                        </p>
                       </div>
                     </div>
                     <div className='flex flex-1 items-end justify-between text-sm'>
@@ -125,7 +129,9 @@ export default function Cart() {
         <div className='border-t border-gray-200 px-4 py-6 sm:px-6'>
           <div className='flex justify-between my-2 text-base font-medium text-gray-900'>
             <p>Subtotal</p>
-            <p>Rs {totalAmount}</p>
+            <p>
+              <span>&#8377;</span> {totalAmount}
+            </p>
           </div>
           <div className='flex justify-between my-2 text-base font-medium text-gray-900'>
             <p>Total Items in Cart</p>

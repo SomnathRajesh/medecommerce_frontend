@@ -94,7 +94,6 @@ export default function ProductDetail() {
                 ))}
               <li className='text-sm'>
                 <a
-                  href={product.href}
                   aria-current='page'
                   className='font-medium text-gray-500 hover:text-gray-600'
                 >
@@ -106,11 +105,11 @@ export default function ProductDetail() {
 
           {/* Image gallery */}
           <div className='mx-auto mt-2 max-w-2xl sm:px-6  lg:max-w-2xl'>
-            <div className='aspect-h-4 aspect-w-10 hidden overflow-hidden rounded-lg lg:block'>
+            <div className='aspect-h-5 aspect-w-10 hidden overflow-hidden rounded-lg lg:block'>
               <img
                 src={product.image}
                 alt={product.name}
-                className='h-full w-full object-cover object-center'
+                className='h-full w-full object-center'
               />
             </div>
             {/* <div className='hidden lg:grid lg:grid-cols-1 lg:gap-y-8'>
@@ -150,6 +149,7 @@ export default function ProductDetail() {
             <div className='mt-4 lg:row-span-3 lg:mt-0'>
               <h2 className='sr-only'>Medicine information</h2>
               <p className='text-3xl tracking-tight text-gray-900'>
+                <span>&#8377;</span>
                 {product.price}
               </p>
 
@@ -211,14 +211,16 @@ export default function ProductDetail() {
                 </div>
               </div> */}
 
-              <div className='mt-10'>
-                <h2 className='text-sm font-medium text-gray-900'>Details</h2>
+              <div className='mt-5'>
+                <h2 className='text-sm font-medium text-gray-900'>
+                  Description
+                </h2>
 
                 <div className='mt-4 space-y-6'>
                   <p className='text-sm text-gray-600'>{product.description}</p>
                 </div>
               </div>
-              <div className='mt-10'>
+              <div className='mt-5'>
                 <h2 className='text-sm font-medium text-gray-900'>Seller</h2>
 
                 <div className='mt-4 space-y-6'>

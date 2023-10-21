@@ -43,56 +43,18 @@ function classNames(...classes) {
 
 export default function AdminProductList() {
   const dispatch = useDispatch();
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const medicines = useSelector(selectAllProducts);
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
-  const [page, setPage] = useState(1);
   const totalItems = useSelector(selectTotalItems);
   const categories = useSelector(selectAllCategories);
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  const filters = [
-    {
-      id: 'category',
-      name: 'Category',
-      options: categories,
-    },
-  ];
 
-  const handleFilter = (e, section, option) => {
-    const newFilter = { ...filter };
-    //TODO:on server it should support multiple categories
-    if (e.target.checked) {
-      if (newFilter[section.id]) {
-        newFilter[section.id].push(option.value);
-      } else {
-        newFilter[section.id] = [option.value];
-      }
-    } else {
-      const index = newFilter[section.id].findIndex(
-        (el) => el === option.value
-      );
-      newFilter[section.id].splice(index, 1);
-    }
-
-    setFilter(newFilter);
-  };
-  const handleSort = (e, option) => {
+  const handleSort = (option) => {
     const sort = { _sort: option.sort, _order: option.order };
     setSort(sort);
+    console.log(sort);
   };
-  const handlePage = (page) => {
-    setPage(page);
-  };
-
-  // useEffect(() => {
-  //   const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-  //   dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
-  // }, [dispatch, filter, sort, page]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [totalItems, sort]);
 
   useEffect(() => {
     dispatch(fetchAllCategoriesAsync());
@@ -101,7 +63,7 @@ export default function AdminProductList() {
   return (
     <>
       {/* component */}
-      <div className='overflow-x-auto'>
+      <div className='my-4 lg:col-span-3'>
         <div>
           <Link
             to='/admin/product-form'
@@ -110,6 +72,8 @@ export default function AdminProductList() {
             Add Medicine
           </Link>
         </div>
+      </div>
+      <div className='overflow-x-auto'>
         <div className=' flex items-center justify-center bg-gray-100 font-sans overflow-hidden'>
           <div className='w-full'>
             <div className='bg-white shadow-md rounded my-6'>
@@ -125,7 +89,7 @@ export default function AdminProductList() {
                         })
                       }
                     >
-                      Medicine Id
+                      Id
                       {sort._sort === 'id' &&
                         (sort._order === 'asc' ? (
                           <ArrowUpIcon className='w-4 h-4 inline'></ArrowUpIcon>
@@ -133,34 +97,18 @@ export default function AdminProductList() {
                           <ArrowDownIcon className='w-4 h-4 inline'></ArrowDownIcon>
                         ))}
                     </th>
+                    <th className='py-3 px-6 text-center'>Medicine Name</th>
                     <th
                       className='py-3 px-6 text-left'
                       onClick={(e) =>
                         handleSort({
-                          sort: 'totalAmount',
-                          order: sort._order == 'asc' ? 'desc' : 'asc',
-                        })
-                      }
-                    >
-                      Medicine Name
-                      {sort._sort === 'totalAmount' &&
-                        (sort._order === 'asc' ? (
-                          <ArrowUpIcon className='w-4 h-4 inline'></ArrowUpIcon>
-                        ) : (
-                          <ArrowDownIcon className='w-4 h-4 inline'></ArrowDownIcon>
-                        ))}
-                    </th>
-                    <th
-                      className='py-3 px-6 text-left'
-                      onClick={(e) =>
-                        handleSort({
-                          sort: 'totalAmount',
+                          sort: 'price',
                           order: sort._order == 'asc' ? 'desc' : 'asc',
                         })
                       }
                     >
                       Price
-                      {sort._sort === 'totalAmount' &&
+                      {sort._sort === 'price' &&
                         (sort._order === 'asc' ? (
                           <ArrowUpIcon className='w-4 h-4 inline'></ArrowUpIcon>
                         ) : (
@@ -176,68 +124,88 @@ export default function AdminProductList() {
                   </tr>
                 </thead>
                 <tbody className='text-gray-600 text-sm font-light'>
-                  {medicines.map((medicine) => (
-                    <tr className='border-b border-gray-200 hover:bg-gray-100'>
-                      <td className='py-3 px-6 text-left whitespace-nowrap'>
-                        <div className='flex items-center'>
-                          <div className='mr-2'></div>
-                          <span className='font-medium'>{medicine.id}</span>
-                        </div>
-                      </td>
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex items-center justify-center'>
-                          {medicine.name}
-                        </div>
-                      </td>
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex items-center justify-center'>
-                          {medicine.price}
-                        </div>
-                      </td>
-                      {/* <td className='py-3 px-6 text-center'>
+                  {medicines
+                    .filter((product) => {
+                      return product;
+                    })
+                    .sort((a, b) => {
+                      if (sort._sort === 'price') {
+                        if (sort._order === 'asc') {
+                          return a.price - b.price;
+                        } else if (sort._order == 'desc') {
+                          return b.price - a.price;
+                        }
+                      } else if (sort._sort === 'id') {
+                        if (sort._order === 'asc') {
+                          return a.id - b.id;
+                        } else if (sort._order == 'desc') {
+                          return b.id - a.id;
+                        }
+                      }
+                      return 0;
+                    })
+                    .map((medicine) => (
+                      <tr className='border-b border-gray-200 hover:bg-gray-100'>
+                        <td className='py-3 px-6 text-left whitespace-nowrap'>
+                          <div className='flex items-center'>
+                            <span className='font-medium'>{medicine.id}</span>
+                          </div>
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className=''>
+                            <div>{medicine.name}</div>
+                          </div>
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex items-center justify-center'>
+                            <span>&#8377;</span>
+                            {medicine.price}
+                          </div>
+                        </td>
+                        {/* <td className='py-3 px-6 text-center'>
                         <div className=''>
                           <div>{medicine.description}</div>
                         </div>
                       </td> */}
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex items-center justify-center'>
-                          {medicine.isAvailable ? 'Yes' : 'No'}
-                        </div>
-                      </td>
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex items-center justify-center'>
-                          {medicine.category.medicineType}
-                        </div>
-                      </td>
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex items-center justify-center'>
-                          {medicine.seller}
-                        </div>
-                      </td>
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex items-center justify-center'>
-                          {medicine.deleted ? 'Yes' : 'No'}
-                        </div>
-                      </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex items-center justify-center'>
+                            {medicine.isAvailable ? 'Yes' : 'No'}
+                          </div>
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex items-center justify-center'>
+                            {medicine.category.medicineType}
+                          </div>
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex items-center justify-center'>
+                            {medicine.seller}
+                          </div>
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex items-center justify-center'>
+                            {medicine.deleted ? 'Yes' : 'No'}
+                          </div>
+                        </td>
 
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex item-center justify-center'>
-                          <div className='w-6 mr-4 transform hover:text-purple-500 hover:scale-110'>
-                            <Link to={`/product-detail/${medicine.id}`}>
-                              <EyeIcon className='w-8 h-8'></EyeIcon>
-                            </Link>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex item-center justify-center'>
+                            <div className='w-6 mr-4 transform hover:text-purple-500 hover:scale-110'>
+                              <Link to={`/product-detail/${medicine.id}`}>
+                                <EyeIcon className='w-8 h-8'></EyeIcon>
+                              </Link>
+                            </div>
+                            <div className='w-6 mr-2 transform hover:text-purple-500 hover:scale-110'>
+                              <Link
+                                to={`/admin/product-form/edit/${medicine.id}`}
+                              >
+                                <PencilIcon className='w-8 h-8'></PencilIcon>
+                              </Link>
+                            </div>
                           </div>
-                          <div className='w-6 mr-2 transform hover:text-purple-500 hover:scale-110'>
-                            <Link
-                              to={`/admin/product-form/edit/${medicine.id}`}
-                            >
-                              <PencilIcon className='w-8 h-8'></PencilIcon>
-                            </Link>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

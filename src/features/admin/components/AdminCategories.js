@@ -38,7 +38,7 @@ function AdminCategories() {
   return (
     <>
       {/* component */}
-      <div className='lg:col-span-3'>
+      <div className='my-4 lg:col-span-3'>
         <div>
           <Link
             to='/admin/category-form'
@@ -64,7 +64,7 @@ function AdminCategories() {
                         })
                       }
                     >
-                      Category
+                      Category ID
                       {sort._sort === 'id' &&
                         (sort._order === 'asc' ? (
                           <ArrowUpIcon className='w-4 h-4 inline'></ArrowUpIcon>
@@ -72,34 +72,56 @@ function AdminCategories() {
                           <ArrowDownIcon className='w-4 h-4 inline'></ArrowDownIcon>
                         ))}
                     </th>
-                    <th className='py-3 px-6 text-center'>Actions</th>
+                    <th className='py-3 px-6 text-center'>Category</th>
+                    <th className='py-3 px-6 text-center'>Deleted</th>
+                    <th className='py-3 px-6 text-center'>Edit</th>
                   </tr>
                 </thead>
                 <tbody className='text-gray-600 text-sm font-light'>
-                  {categories.map((category) => (
-                    <tr className='border-b border-gray-200 hover:bg-gray-100'>
-                      <td className='py-3 px-6 text-left whitespace-nowrap'>
-                        <div className='flex items-center'>
-                          <div className='mr-2'></div>
-                          <span className='font-medium'>
-                            {category.medicineType}
-                            {category.deleted ? '(deleted)' : null}
-                          </span>
-                        </div>
-                      </td>
-                      <td className='py-3 px-6 text-center'>
-                        <div className='flex item-center justify-center'>
-                          <div className='w-6 mr-2 transform hover:text-purple-500 hover:scale-110'>
-                            <Link
-                              to={`/admin/category-form/edit/${category.id}`}
-                            >
-                              <PencilIcon className='w-8 h-8'></PencilIcon>
-                            </Link>
+                  {categories
+                    .filter((category) => {
+                      return category;
+                    })
+                    .sort((a, b) => {
+                      if (sort._sort === 'id') {
+                        if (sort._order === 'asc') {
+                          return a.id - b.id;
+                        } else if (sort._order === 'desc') {
+                          return b.id - a.id;
+                        }
+                      }
+                      return 0;
+                    })
+                    .map((category) => (
+                      <tr className='border-b border-gray-200 hover:bg-gray-100'>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex items-center'>
+                            <span className='font-medium'>{category.id}</span>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex items-center justify-center'>
+                            {category.medicineType}
+                          </div>
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex items-center justify-center'>
+                            {category.deleted ? 'Yes' : 'No'}
+                          </div>
+                        </td>
+                        <td className='py-3 px-6 text-center'>
+                          <div className='flex item-center justify-center'>
+                            <div className='w-6 mr-2 transform hover:text-purple-500 hover:scale-110'>
+                              <Link
+                                to={`/admin/category-form/edit/${category.id}`}
+                              >
+                                <PencilIcon className='w-8 h-8'></PencilIcon>
+                              </Link>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

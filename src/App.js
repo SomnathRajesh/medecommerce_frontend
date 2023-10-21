@@ -189,7 +189,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className='App'>
+    <div className='App bg-cyan-100'>
       <Provider template={AlertTemplate} {...options}>
         <RouterProvider router={router} />
       </Provider>

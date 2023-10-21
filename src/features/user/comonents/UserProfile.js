@@ -84,7 +84,7 @@ export default function UserProfile() {
           )}
         </div>
 
-        <div className='border-t border-gray-200 px-4 py-6 sm:px-6'>
+        <div className='border-t border-gray-200 px-4 py-3 sm:px-6'>
           <button
             onClick={(e) => {
               setShowAddAddressForm(true);
@@ -286,7 +286,7 @@ export default function UserProfile() {
               </div>
             </form>
           ) : null}
-          <p className='mt-0.5 text-sm text-gray-500'>Your Addresses</p>
+          <p className='mt-4 text-lg text-gray-500'>Your Addresses</p>
           {addresses &&
             addresses.map((address, index) => (
               <div>
@@ -302,7 +302,7 @@ export default function UserProfile() {
                     <div className='space-y-12'>
                       <div className='border-b border-gray-900/10 pb-12'>
                         <h2 className='text-2xl font-semibold leading-7 text-gray-900'>
-                          Personal Information
+                          Delivery Address
                         </h2>
                         <p className='mt-1 text-sm leading-6 text-gray-600'>
                           Use a permanent address where you can receive mail.
@@ -488,7 +488,7 @@ export default function UserProfile() {
                     </div>
                   </form>
                 ) : null}
-                <div className='flex justify-between gap-x-6 px-5 py-5 border-2 border-gray-200'>
+                <div className='flex justify-between gap-x-6 px-5 py-5 border-2 border-gray-500'>
                   <div className='flex min-w-0 gap-x-4'>
                     <div className='min-w-0 flex-auto'>
                       <p className='text-sm font-semibold leading-6 text-gray-900'>
