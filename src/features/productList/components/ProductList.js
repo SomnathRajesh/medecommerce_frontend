@@ -180,8 +180,9 @@ export default function ProductList() {
                                 </h3>
                                 <Disclosure.Panel className='pt-6'>
                                   <div className='space-y-6'>
-                                    {section.options.map(
-                                      (option, optionIdx) => (
+                                    {section.options
+                                      .filter((option) => !option.deleted)
+                                      .map((option, optionIdx) => (
                                         <div
                                           key={option.id}
                                           className='flex items-center'
@@ -205,13 +206,10 @@ export default function ProductList() {
                                             htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
                                             className='ml-3 min-w-0 flex-1 text-gray-500'
                                           >
-                                            {option.deleted
-                                              ? null
-                                              : option.medicineType}
+                                            {option.medicineType}
                                           </label>
                                         </div>
-                                      )
-                                    )}
+                                      ))}
                                   </div>
                                 </Disclosure.Panel>
                               </>
@@ -344,36 +342,36 @@ export default function ProductList() {
                             </h3>
                             <Disclosure.Panel className='pt-6'>
                               <div className='space-y-4'>
-                                {section.options.map((option, optionIdx) => (
-                                  <div
-                                    key={option.id}
-                                    className='flex items-center'
-                                  >
-                                    <input
-                                      id={`filter-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      defaultValue={option.medicineType}
-                                      type='checkbox'
-                                      defaultChecked={option.checked}
-                                      onClick={(e) => {
-                                        if (e.target.checked) {
-                                          setCategory(e.target.value);
-                                        } else {
-                                          setCategory('');
-                                        }
-                                      }}
-                                      className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                                    />
-                                    <label
-                                      htmlFor={`filter-${section.id}-${optionIdx}`}
-                                      className='ml-3 text-sm text-gray-600'
+                                {section.options
+                                  .filter((option) => !option.deleted)
+                                  .map((option, optionIdx) => (
+                                    <div
+                                      key={option.id}
+                                      className='flex items-center'
                                     >
-                                      {option.deleted
-                                        ? null
-                                        : option.medicineType}
-                                    </label>
-                                  </div>
-                                ))}
+                                      <input
+                                        id={`filter-${section.id}-${optionIdx}`}
+                                        name={`${section.id}[]`}
+                                        defaultValue={option.medicineType}
+                                        type='checkbox'
+                                        defaultChecked={option.checked}
+                                        onClick={(e) => {
+                                          if (e.target.checked) {
+                                            setCategory(e.target.value);
+                                          } else {
+                                            setCategory('');
+                                          }
+                                        }}
+                                        className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                                      />
+                                      <label
+                                        htmlFor={`filter-${section.id}-${optionIdx}`}
+                                        className='ml-3 text-sm text-gray-600'
+                                      >
+                                        {option.medicineType}
+                                      </label>
+                                    </div>
+                                  ))}
                               </div>
                             </Disclosure.Panel>
                           </>

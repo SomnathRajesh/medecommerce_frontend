@@ -138,7 +138,7 @@ function ProductForm() {
       </form>
       {selectedCategory && (
         <Modal
-          title={`Delete ${selectedCategory.label}`}
+          title={`Delete ${selectedCategory.medicineType}`}
           message='Are you sure you want to remove this category?'
           modOption='Delete'
           cancelOption='Cancel'

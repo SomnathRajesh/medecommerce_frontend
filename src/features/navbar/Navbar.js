@@ -107,7 +107,7 @@ function Navbar({ children }) {
                         {items.length}
                       </span>
                     )}
-                    {isLoggedIn ? (
+                    {isLoggedIn && userInfo ? (
                       <div className='ml-3'>
                         <div className='text-base font-medium leading-none text-white'>
                           {userInfo.firstName} {userInfo.lastName}
@@ -228,7 +228,7 @@ function Navbar({ children }) {
                       />
                     )}
                   </div>
-                  {isLoggedIn ? (
+                  {isLoggedIn && userInfo ? (
                     <div className='ml-3'>
                       <div className='text-base font-medium leading-none text-white'>
                         {userInfo.firstName} {userInfo.lastName}
