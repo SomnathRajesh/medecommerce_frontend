@@ -1,10 +1,13 @@
 export function addToCart(item) {
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Carts', {
-      method: 'POST',
-      body: JSON.stringify(item),
-      headers: { 'content-type': 'application/json' },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Carts`,
+      {
+        method: 'POST',
+        body: JSON.stringify(item),
+        headers: { 'content-type': 'application/json' },
+      }
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -14,7 +17,9 @@ export function fetchItemsByUserId(user) {
   //url wont be hardcoded
   const userId = user.id;
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Carts/' + userId);
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Carts/` + userId
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -23,7 +28,7 @@ export function fetchItemsByUserId(user) {
 export function updateCart(update) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      'https://localhost:7203/api/Carts/' + update.id,
+      `${process.env.REACT_APP_API_BASE_URL}/api/Carts/` + update.id,
       {
         method: 'PUT',
         body: JSON.stringify(update),
@@ -37,10 +42,13 @@ export function updateCart(update) {
 
 export function deleteItemFromCart(itemId) {
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Carts/' + itemId, {
-      method: 'DELETE',
-      headers: { 'content-type': 'application/json' },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Carts/` + itemId,
+      {
+        method: 'DELETE',
+        headers: { 'content-type': 'application/json' },
+      }
+    );
     if (response.status === 204) {
       // 204 status code indicates a successful deletion.
       resolve({ success: true });

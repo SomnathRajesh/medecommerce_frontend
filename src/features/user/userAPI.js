@@ -1,7 +1,9 @@
 // A mock function to mimic making an async request for data
 export function fetchLoggedInUser(user) {
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Users/' + user.id);
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Users/` + user.id
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -10,7 +12,7 @@ export function fetchLoggedInUser(user) {
 export function fetchLoggedInUserAddresses(userId) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      'https://localhost:7203/api/Addresses/' + userId
+      `${process.env.REACT_APP_API_BASE_URL}/api/Addresses/` + userId
     );
     const data = await response.json();
     console.log(data);
@@ -20,7 +22,9 @@ export function fetchLoggedInUserAddresses(userId) {
 
 export function fetchAllUsers() {
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Users');
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Users`
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -28,7 +32,9 @@ export function fetchAllUsers() {
 
 export function fetchLoggedInUserOrders(userId) {
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Orders/' + userId);
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Orders/` + userId
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -36,7 +42,7 @@ export function fetchLoggedInUserOrders(userId) {
 export function updateUserAddress(update) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      'https://localhost:7203/api/Addresses/' + update.id,
+      `${process.env.REACT_APP_API_BASE_URL}/api/Addresses/` + update.id,
       {
         method: 'PUT',
         body: JSON.stringify(update),
@@ -50,11 +56,14 @@ export function updateUserAddress(update) {
 
 export function addUserAddress(address) {
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Addresses', {
-      method: 'POST',
-      body: JSON.stringify(address),
-      headers: { 'content-type': 'application/json' },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Addresses`,
+      {
+        method: 'POST',
+        body: JSON.stringify(address),
+        headers: { 'content-type': 'application/json' },
+      }
+    );
     const data = await response.json();
     console.log(data);
     resolve({ data });
@@ -63,9 +72,12 @@ export function addUserAddress(address) {
 
 export function deleteUserAddress(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Addresses/' + id, {
-      method: 'DELETE',
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Addresses/` + id,
+      {
+        method: 'DELETE',
+      }
+    );
 
     if (response.status === 204) {
       // 204 status code indicates a successful deletion.

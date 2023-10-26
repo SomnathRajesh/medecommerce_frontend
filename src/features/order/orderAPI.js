@@ -1,10 +1,13 @@
 export function createOrder(order) {
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Orders', {
-      method: 'POST',
-      body: JSON.stringify(order),
-      headers: { 'content-type': 'application/json' },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Orders`,
+      {
+        method: 'POST',
+        body: JSON.stringify(order),
+        headers: { 'content-type': 'application/json' },
+      }
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -13,7 +16,7 @@ export function createOrder(order) {
 export function updateOrder(order) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      'https://localhost:7203/api/Orders/' + order.id,
+      `${process.env.REACT_APP_API_BASE_URL}/api/Orders/` + order.id,
       {
         method: 'PUT',
         body: JSON.stringify(order),
@@ -43,7 +46,9 @@ export function updateOrder(order) {
 
 export function fetchAllOrders() {
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Orders');
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Orders`
+    );
     const data = await response.json();
     resolve({ data });
   });

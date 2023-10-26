@@ -2,7 +2,7 @@
 export function createUser(userData) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      'https://localhost:7203/api/Authentication/signup',
+      `${process.env.REACT_APP_API_BASE_URL}/api/Authentication/signup`,
       {
         method: 'POST',
         body: JSON.stringify(userData),
@@ -20,7 +20,7 @@ export function userLogin(loginInfo) {
     //const email = loginInfo.email;
     //const password = loginInfo.password;
     const response = await fetch(
-      'https://localhost:7203/api/Authentication/signin',
+      `${process.env.REACT_APP_API_BASE_URL}/api/Authentication/signin`,
       {
         method: 'POST',
         body: JSON.stringify(loginInfo),

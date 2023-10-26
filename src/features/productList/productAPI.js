@@ -2,7 +2,9 @@
 export function fetchAllProducts() {
   //url wont be hardcoded
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Medicines');
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Medicines`
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -11,7 +13,9 @@ export function fetchAllProducts() {
 export function fetchProductById(id) {
   //url wont be hardcoded
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Medicines/' + id);
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Medicines/` + id
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -20,11 +24,14 @@ export function fetchProductById(id) {
 export function createProduct(product) {
   //url wont be hardcoded
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Medicines/', {
-      method: 'POST',
-      body: JSON.stringify(product),
-      headers: { 'content-type': 'application/json' },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Medicines/`,
+      {
+        method: 'POST',
+        body: JSON.stringify(product),
+        headers: { 'content-type': 'application/json' },
+      }
+    );
     const data = await response.json();
     console.log(data);
     resolve({ data });
@@ -34,7 +41,7 @@ export function createProduct(product) {
 export function updateProduct(update) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      'https://localhost:7203/api/Medicines/' + update.id,
+      `${process.env.REACT_APP_API_BASE_URL}/api/Medicines/` + update.id,
       {
         method: 'PUT',
         body: JSON.stringify(update),
@@ -83,7 +90,9 @@ export function fetchProductsByFilters({ filter, sort, pagination }) {
 export function fetchAllCategories() {
   //url wont be hardcoded
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Categories');
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Categories`
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -92,11 +101,14 @@ export function fetchAllCategories() {
 export function createCategory(category) {
   //url wont be hardcoded
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Categories/', {
-      method: 'POST',
-      body: JSON.stringify(category),
-      headers: { 'content-type': 'application/json' },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Categories/`,
+      {
+        method: 'POST',
+        body: JSON.stringify(category),
+        headers: { 'content-type': 'application/json' },
+      }
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -105,7 +117,7 @@ export function createCategory(category) {
 export function updateCategory(update) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      'https://localhost:7203/api/Categories/' + update.id,
+      `${process.env.REACT_APP_API_BASE_URL}/api/Categories/` + update.id,
       {
         method: 'PUT',
         body: JSON.stringify(update),
@@ -120,7 +132,9 @@ export function updateCategory(update) {
 export function fetchCategoryById(id) {
   //url wont be hardcoded
   return new Promise(async (resolve) => {
-    const response = await fetch('https://localhost:7203/api/Categories/' + id);
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/api/Categories/` + id
+    );
     const data = await response.json();
     console.log(data);
     resolve({ data });
