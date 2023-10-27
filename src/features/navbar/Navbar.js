@@ -19,7 +19,7 @@ const user = {
 const navigation = [
   //{ name: 'Products', link: '/', User: true },
   //{ name: 'Products', link: '/', guest: true },
-  { name: 'Products', link: '/admin', Admin: true },
+  { name: 'Medicines', link: '/admin', Admin: true },
   { name: 'Orders', link: '/admin/orders', Admin: true },
   { name: 'Users', link: '/admin/users', Admin: true },
   { name: 'Categories', link: '/admin/categories', Admin: true },
